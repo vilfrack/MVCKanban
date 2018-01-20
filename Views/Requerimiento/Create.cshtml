@@ -1,0 +1,60 @@
+﻿
+@Styles.Render("~/Content/FileinputCSS")
+@Scripts.Render("~/bundles/FileinputJS")
+@{
+    SelectList DropDepartamento = ViewBag.Depatarmento;
+}
+<div id="div_Titulo" class="form-group">
+    <label class="col-sm-2 control-label">Titulo</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" id="Titulo" name="Titulo" placeholder="Titulo">
+        <label id="Error_Titulo" class="control-label" for="inputError2"></label>
+    </div>
+</div>
+@* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
+<div id="div_Descripcion" class="form-group">
+    <label class="col-sm-2 control-label">Descripcion del requerimiento</label>
+    <div class="col-sm-10">
+        <textarea id="Descripcion" class="form-control" name="Descripcion" rows="3" placeholder="Descripcion del requerimiento"></textarea>
+        @* EL ERROR DEBE LLAMARSE IGUAL AL MODEL *@
+        <label id="Error_Descripcion" class="control-label" for="inputError2"></label>
+    </div>
+</div>
+<div id="div_departamento" class="form-group">
+    <label class="col-sm-2 control-label">Departamento</label>
+    <div class="col-sm-10">
+        @Html.DropDownList("IDDepartamento", DropDepartamento, "Seleccionar", new { @class = "form-control" })
+        <label id="Error_departamento" class="control-label"></label>
+    </div>
+</div>
+@* drag and drop *@
+<div class="form-group">
+
+    <label class="col-sm-2 control-label">Agregar archivos</label>
+    <div class="col-sm-10">
+        <input id="file" name="file" type="file" multiple>
+    </div>
+
+</div>
+
+<input type="hidden" id="hddRuta" name="hddRuta" value="" />
+
+
+<div id="alert_success" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
+<div id="alert_danger" class="alert alert-danger" role="alert"></div>
+
+
+<script>
+    $('#file').fileinput({
+        language: 'es',
+        initialPreviewShowDelete: true,
+        uploadAsync: true,
+        showCaption: true,
+        showPreview: true,
+        showRemove: true,
+        showUpload: false, // <------ just set this from true to false
+        maxFileCount: 3,
+        allowedFileExtensions: ['jpg', 'png', 'pdf'],
+    });
+    esconderMensajes();
+</script>

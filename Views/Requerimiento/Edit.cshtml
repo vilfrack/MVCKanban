@@ -1,0 +1,96 @@
+﻿@model MVCKanban.ViewModel.ViewTaskFile
+
+
+@*<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Editar</h4>
+    </div>*@
+@*<div class="modal-body">*@
+@Html.HiddenFor(m => m.RequerimientoID, new { id = "RequerimientoID" })
+
+
+<div id="div_Titulo" class="form-group">
+    <label class="col-sm-2 control-label">Titulo</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(m => m.Titulo, new { Class = "form-control", placeholder = "Titulo", id = "txtTitulo" })
+        <label id="Error_Titulo" class="control-label" for="inputError2"></label>
+    </div>
+</div>
+@* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
+<div id="div_Descripcion" class="form-group">
+    <label class="col-sm-2 control-label">Descripcion del requerimiento</label>
+    <div class="col-sm-10">
+
+        @Html.TextAreaFor(m => m.Descripcion, new { Class = "form-control", placeholder = "Descripcion", id = "txtDescripcion", rows = 3 })
+
+        <label id="Error_Descripcion" class="control-label" for="inputError2"></label>
+    </div>
+</div>
+<div id="div_IDDepartamento" class="form-group">
+    <label class="col-sm-2 control-label">Departamento</label>
+    <div class="col-sm-10">
+        @Html.DropDownListFor(m => m.IDDepartamento, (SelectList)ViewBag.Depatarmento, "Seleccionar", new { @class = "form-control" })
+        <label id="Error_IDDepartamento" class="control-label"></label>
+    </div>
+</div>
+@* drag and drop *@
+<div class="form-group">
+
+    <label class="col-sm-2 control-label">Agregar archivos</label>
+    <div class="col-sm-10">
+        <input id="FileEdit" name="FileEdit" type="file" multiple>
+    </div>
+
+</div>
+<div id="alert_success_edit" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
+<div id="alert_danger_edit" class="alert alert-danger" role="alert"></div>
+
+@*</div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            <input type="submit" value="Enviar" class="btn btn-primary" id="btnEnviar">
+        </div>
+    </div>*@
+
+
+<script>
+      esconderMensajes();
+    //var url = $('#foo').data('url');
+    $('#FileEdit').fileinput({
+        overwriteInitial: false,
+        initialPreviewShowDelete: true,
+        uploadAsync: true,
+        showCaption: true,
+        showPreview: true,
+        showRemove: true,
+        showUpload: false, // <------ just set this from true to false
+        maxFileCount: 3,
+        allowedFileExtensions: ['jpg', 'png', 'pdf'],
+        initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+        initialPreview: [
+              @foreach (var item in Model.ruta_virtual)
+                {
+                  <text>'@Url.Content(item)',</text>
+
+            }
+        ],
+        initialPreviewConfig: [
+           @foreach (var item in Model.IDFiles)
+           {
+               <text>
+                {
+                    url: '/Requerimiento/DeleteImage/',
+                    key: @item,//parametro que enviamos via ajax/post para eliminar el archivo
+                    extra: { id: @item}//investigar
+                },
+                </text>
+           }
+
+        ],
+        initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+    });
+
+
+</script>

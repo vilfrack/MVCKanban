@@ -36,6 +36,7 @@ namespace MVCKanban.Models
         public DbSet<MaestroTaskStatus> MaestroTaskStatus { get; set; }
         public DbSet<Files> Files { get; set; }
         public DbSet<Status> Status { get; set; }
+        public DbSet<Perfiles> Perfiles { get; set; }
 
         //ELIMINAR LA PLURALIZACION DE LAS TABLAS
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -1,23 +1,33 @@
-﻿
-//CUANDO CERREMOS EL MODAL
+﻿//CUANDO CERREMOS EL MODAL
 $("button[data-dismiss='modal']").click(function () {
-    $('#departamento').val('');
+    $('#login').val('');
+    $('#password').val('');
+    $('#Nombre').val('');
+    $('#Apellido').val('');
+    $('#Email').val('');
+    $('#file').val('');
+    $('#alert_success').hide();
+    $(".fileinput-remove-button").click();
+    $("#btnEnviar").prop('disabled', false);
+    $('#alert_danger').hide();
+    $("#btnEliminar").prop('disabled', false);
+    $("#btnEnviarEditar").prop('disabled', false);
+    esconderMensajes();
 });
 //AL HACER CLICK EN EL BOTON ELIMINAR QUE ESTA EN LA TABLA, ESTE OBTIENE EL ID Y SE LO ENVIA AL HIDDEN QUE ESTA EN EL MODAL DE ELIMINAR
-$("#tableDepartamento").on('click', 'tr #eliminar', function () {
+$("#tableRoles").on('click', 'tr #eliminar', function () {
     var id = $(this).parents("tr").find("td").eq(0).html();
     $('.mensaje').html('Seguro desea eliminar el registro seleccionados?');
     document.getElementById("hdId").value = id;
 });
 //ELIMINAR EL REGISTRO
 $("#btnEliminar").click(function () {
-
     var params = {
         id: $('#hdId').val()
     };
     $.ajax({
         type: "POST",
-        url: "/Departamento/Delete",
+        url: "/Roles/Delete",
         data: params,
         dataType: "json",
         success: function (data) {
@@ -28,7 +38,7 @@ $("#btnEliminar").click(function () {
                 $('#alert_success_eliminar').html('Registro eliminado');
                 $('#alert_success_eliminar').show("fast");
                 $("#btnEliminar").prop('disabled', true);
-                LoadGridDepartamento();
+                LoadGridRoles();
             }
             else {
                 $('#alert_danger_eliminar').html(data.mensaje);
@@ -44,13 +54,15 @@ $("#btnEliminar").click(function () {
 //SE SACAN DEL REEADY PORQUE LUEGO SE EJECUTAN DOS VECES
 $("#formEdit").submit(function (e) {
     e.preventDefault();
-    var parametros = {
-        IDDepartamento: $('#IDDepartamento').val(),
-        departamento: $('#txtdepartamento').val()
-    }
+    var parametros = new FormData($(this)[0]);
     $.ajax({
         type: "POST",
-        url: "/Departamento/Edit",
+        url: "/Roles/Edit",
+        cache: false,
+        contentType: false, //importante enviar este parametro en false
+        processData: false, //importante enviar este parametro en false
+        //CONVIERTO EL OBJETO EN FORMATO JSON
+        // data: JSON.stringify(list),
         data: parametros,
 
         dataType: "json",
@@ -62,11 +74,10 @@ $("#formEdit").submit(function (e) {
                     $("#ErrorEdit_" + key).html('');
                     $("#divEdit_" + key).removeClass(" has-error has-feedback");
                 });
-                $("#btnEnviar").prop('disabled', true);
-                $('#alert_success_edit').show("fast");
-                $('#alert_success_edit').show("fast");
-                $('#alert_danger_edit').hide();
-                LoadGridDepartamento();
+                $('#alert_success').show("fast");
+                $('#alert_success').show("fast");
+                $('#alert_danger').hide();
+                LoadGridRoles();
 
             }
             else {
@@ -86,21 +97,26 @@ $("#formEdit").submit(function (e) {
             }
         },
         error: function (data) {
-            $('#alert_danger_edit').html(data);
-            $('#alert_danger_edit').show("fast");
+            $('#alert_danger').html(data);
+            $('#alert_danger').show("fast");
         },
 
     });
 });
 $("#formCreate").submit(function (e) {
     e.preventDefault();
-    var parametros = {
-        departamento: $('#departamento').val()
-    }
+    //ruta la cual recibira nuestro archivo
+    var parametros = new FormData($(this)[0]);
+    //CREO EL AJAX
 
     $.ajax({
         type: "POST",
-        url: "/Departamento/Create",
+        url: "/Roles/Create",
+        cache: false,
+        contentType: false, //importante enviar este parametro en false
+        processData: false, //importante enviar este parametro en false
+        //CONVIERTO EL OBJETO EN FORMATO JSON
+        // data: JSON.stringify(list),
         data: parametros,
 
         dataType: "json",
@@ -112,9 +128,9 @@ $("#formCreate").submit(function (e) {
                     $("#div_" + key).removeClass(" has-error has-feedback");
                 });
                 $('#alert_success').show("fast");
-                $("#btnEnviar").prop('disabled', true);
+                $("#btnEnviarEditar").prop('disabled', true);
                 $('#alert_danger').hide();
-                LoadGridDepartamento();
+                LoadGridRoles();
             }
             else {
 
@@ -142,27 +158,28 @@ $("#formCreate").submit(function (e) {
     });
 });
 //CUANDO SE DE CLICK A EDITAR DESDE LA TABLA
-$("#tableDepartamento").on('click', 'tr #editar', function () {
-    var id = $(this).parents("tr").find("td").eq(0).html();
-    var url = "/Departamento/Edit?id=" + id + ""; // Establecer URL de la acción
+$("#tableRoles").on('click', 'tr #editar', function () {
+    var idTask = $(this).parents("tr").find("td").eq(0).html();
+    var url = "/Roles/Edit?id=" + idTask + ""; // Establecer URL de la acción
     $("#btnEnviarEditar").prop('disabled', false);
     $("#contenedor-editar").load(url);
 
 });
 //AL HACER CLICK EN AGREGAR NOS MOSTRARA EL MODAL CON EL FORMULARIO
 $("#agregar").click(function () {
-    var url = "/Departamento/Create"; // Establecer URL de la acción
+    var url = "/Roles/Create"; // Establecer URL de la acción
     $("#contenedor-agregar").load(url);
 });
+
 //FUNCIONES
-function LoadGridDepartamento() {
-    $('#tableDepartamento').dataTable({
+function LoadGridRoles() {
+    $('#tableRoles').dataTable({
         destroy: true,//PERMITE DESTRUIR LA TABLA PARA VOLVERLA A CREAR
         bProcessing: true,
-        sAjaxSource: '/Departamento/get',
+        sAjaxSource: '/Roles/get',
         "columns": [
-          { "data": "IDDepartamento" },
-          { "data": "departamento" },
+          { "data": "Id" },
+          { "data": "Name" },
           {
               "data": null,
               defaultContent: "<button id='editar' class='btn btn-success btn-sm'" +
@@ -177,8 +194,6 @@ function LoadGridDepartamento() {
 function esconderMensajes() {
     $('#alert_danger').hide();
     $('#alert_success').hide();
-    $('#alert_danger_edit').hide();
-    $('#alert_success_edit').hide();
     $('#alert_success_eliminar').hide();
     $('#alert_danger_eliminar').hide();
 }

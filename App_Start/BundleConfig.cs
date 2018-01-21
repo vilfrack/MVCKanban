@@ -52,6 +52,9 @@ namespace MVCKanban
             /*SE AGREGAN LOS JS DE LOS MODULOS*/
             bundles.Add(new ScriptBundle("~/bundles/scriptRequerimiento").Include(
                "~/Scripts/App/Requerimiento/Requerimiento.js").IncludeDirectory("~/Scripts", ".js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/scriptDepartamento").Include(
+               "~/Scripts/App/Departamento/Departamento.js").IncludeDirectory("~/Scripts", ".js"));
         }
     }
 }

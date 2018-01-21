@@ -21,7 +21,7 @@ namespace MVCKanban.Models
         public string Titulo { get; set; }
 
         [Required(ErrorMessage = "You must enter the field {0}")]
-        [StringLength(200, ErrorMessage = "The fiel {0} must contain between {2} and {1} characters", MinimumLength = 10)]
+        [StringLength(800, ErrorMessage = "The fiel {0} must contain between {2} and {1} characters", MinimumLength = 10)]
         public string Descripcion { get; set; }
 
         public int? StatusIDActual { get; set; }

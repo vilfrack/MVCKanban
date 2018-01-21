@@ -168,6 +168,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RequerimientoController.cs" />
@@ -204,6 +205,7 @@
     <Content Include="Global.asax" />
     <Content Include="Img\user2-160x160.jpg" />
     <Content Include="Scripts\adminlte.min.js" />
+    <Content Include="Scripts\App\Departamento\Departamento.js" />
     <Content Include="Scripts\App\Requerimiento\Requerimiento.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -263,6 +265,10 @@
     <Content Include="Views\Requerimiento\Details.cshtml" />
     <Content Include="Views\Requerimiento\Edit.cshtml" />
     <Content Include="Views\Requerimiento\Index.cshtml" />
+    <Content Include="Views\Departamento\Index.cshtml" />
+    <Content Include="Views\Departamento\Details.cshtml" />
+    <Content Include="Views\Departamento\Create.cshtml" />
+    <Content Include="Views\Departamento\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

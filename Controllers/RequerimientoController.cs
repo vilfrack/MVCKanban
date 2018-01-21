@@ -70,10 +70,9 @@ namespace MVCKanban.Controllers
                     {
                         return Json(new { success = false, cantidad = boolArchivos, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
                     }
-                    SaveUploadedFile(file, id);
-                    string ruta = Path.Combine(Server.MapPath("~/Images/" + id));
-                    string ruta_virtual = "~/Images/" + id;
-                   // utl.SaveUploadedFile(file,id, ruta, ruta_virtual);
+                    string ruta = Path.Combine(Server.MapPath("~/Images/Requerimientos/" + id));
+                    string ruta_virtual = "~/Images/Requerimientos/" + id;
+                    utl.SaveUploadedFile(file,id, ruta, ruta_virtual);
 
                 }
                 return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
@@ -127,7 +126,10 @@ namespace MVCKanban.Controllers
                         {
                             return Json(new { success = false, cantidad = boolArchivos, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
                         }
-                        SaveUploadedFile(FileEdit, requerimiento.RequerimientoID);
+
+                        string ruta = Path.Combine(Server.MapPath("~/Images/Requerimientos/" + requerimiento.RequerimientoID));
+                        string ruta_virtual = "~/Images/Requerimientos/" + requerimiento.RequerimientoID;
+                        utl.SaveUploadedFile(FileEdit, requerimiento.RequerimientoID, ruta, ruta_virtual);
                     }
                 }
                 return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });

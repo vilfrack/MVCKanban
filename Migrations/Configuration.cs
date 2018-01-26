@@ -27,6 +27,14 @@ namespace MVCKanban.Migrations
                 new Models.Status { StatusID = 4, nombre = "Rechazados" },
                  new Models.Status { StatusID = 5, nombre = "Finalizados" }
             );
+            //SE AGREGAN LOS PERMISOS
+            context.Permisos.AddOrUpdate(
+                new Models.Permisos { PermisoID = 1, Descripcion = "Ver" },
+                new Models.Permisos { PermisoID = 2, Descripcion = "Crear" },
+                new Models.Permisos { PermisoID = 3, Descripcion = "Modificar" },
+                new Models.Permisos { PermisoID = 4, Descripcion = "Eliminar" },
+                new Models.Permisos { PermisoID = 5, Descripcion = "Asignar" }
+            );
 
         }
     }

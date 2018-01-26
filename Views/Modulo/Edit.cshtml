@@ -1,0 +1,22 @@
+﻿@model MVCKanban.Models.Modulo
+
+@Html.HiddenFor(m => m.ModuloID, new { id = "ModuloID" })
+<div id="divEdit_Descripcion" class="form-group validate">
+    <label class="col-sm-2 control-label">Login del usuario</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(m => m.Descripcion, new { Class = "form-control", placeholder = "Modulo", id = "txtModulo", @maxlength = "20" })
+        <label id="ErrorEdit_Descripcion" class="control-label" for="inputError2"></label>
+    </div>
+</div>
+
+<div id="alert_success_edit" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
+<div id="alert_danger_edit" class="alert alert-danger" role="alert"></div>
+
+
+
+<script>
+    esconderMensajes();
+</script>
+
+
+

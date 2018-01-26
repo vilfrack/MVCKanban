@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" id="agregar">
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Crear Modulo
+    </button>
+</div>
+
+<div>
+    @Html.Action("Details", "Modulo")
+</div>
+
+@* data-backdrop=evita que el modal se cierre al hacer click fuera de el; data-keyboard=evita que el modal se cierre con la tecla esc*@
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal" enctype="multipart/form-data" id="formCreate">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Agregar Modulo</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="contenedor-agregar">
+                        cargando...
+                    </div>
+                    @*@Html.Action("Create", "Users")*@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    @*<button type="button" id="btnSaveOperations" class="btn btn-primary">Save changes</button>*@
+                    <input type="submit" value="Enviar" class="btn btn-primary" id="btnEnviar">
+                    @*<button type="button" value="Enviar" class="btn btn-primary" id="btnEnviar">Enviar</button>*@
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="editModal" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-lg" role="document" id="modalEdit">
+        <div class="modal-content">
+            <form class="form-horizontal" enctype="multipart/form-data" id="formEdit">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Editar Modulo</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="contenedor-editar">
+                        cargando...
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    @*<button type="button" id="btnSaveOperations" class="btn btn-primary">Save changes</button>*@
+                    <input type="submit" value="Enviar" class="btn btn-primary" id="btnEnviarEditar">
+                    @*<button type="button" value="Enviar" class="btn btn-primary" id="btnEnviar">Enviar</button>*@
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<!--MODAL PARA ELIMINAR-->
+<div class="modal fade" tabindex="-1" role="dialog" id="borrarModal" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Eliminar Departamento</h4>
+            </div>
+            <div class="modal-body">
+                <span class="mensaje"> </span>
+                @* hidden SE LLENA AL MOMENTO DE HACER CLICK EN EL BOTON DE ELIMINAR, QUE ESTA EN LA TABLA *@
+                <input type="hidden" id="hdId" value="" />
+                <div id="alert_success_eliminar" class="alert alert-success" role="alert"></div>
+                <div id="alert_danger_eliminar" class="alert alert-danger" role="alert"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnEliminar" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/scriptModulos")
+
+<script>
+    esconderMensajes();
+</script>
+
+
+
+
+
+
+

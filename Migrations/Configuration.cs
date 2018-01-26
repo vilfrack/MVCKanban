@@ -35,7 +35,11 @@ namespace MVCKanban.Migrations
                 new Models.Permisos { PermisoID = 4, Descripcion = "Eliminar" },
                 new Models.Permisos { PermisoID = 5, Descripcion = "Asignar" }
             );
-
+            //SE AGREGAN LOS MODULOS
+            //context.Modulo.AddOrUpdate(
+            //    new Models.Modulo { ModuloID = 1, Descripcion = "Permiso" },
+            //    new Models.Modulo { ModuloID = 2, Descripcion = "Requerimiento" }
+            //);
         }
     }
 }

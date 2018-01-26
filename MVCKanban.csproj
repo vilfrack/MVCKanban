@@ -219,6 +219,7 @@
     <Content Include="Img\user2-160x160.jpg" />
     <Content Include="Scripts\adminlte.min.js" />
     <Content Include="Scripts\App\Departamento\Departamento.js" />
+    <Content Include="Scripts\App\Modulo\Modulo.js" />
     <Content Include="Scripts\App\Requerimiento\Requerimiento.js" />
     <Content Include="Scripts\App\Roles\Roles.js" />
     <Content Include="Scripts\App\Usuario\Usuario.js" />
@@ -252,7 +253,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Modulo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -280,6 +280,10 @@
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Permisos\Index.cshtml" />
+    <Content Include="Views\Modulo\Index.cshtml" />
+    <Content Include="Views\Modulo\Create.cshtml" />
+    <Content Include="Views\Modulo\Edit.cshtml" />
+    <Content Include="Views\Modulo\Details.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -37,7 +37,10 @@ namespace MVCKanban.Models
         public DbSet<Files> Files { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Perfiles> Perfiles { get; set; }
-
+        public DbSet<Permisos> Permisos { get; set; }
+        public DbSet<PermisoPorRol> PermisoPorRol { get; set; }
+        public DbSet<Modulo> Modulo { get; set; }
+        public DbSet<PermisosPorUsuarios> PermisosPorUsuarios { get; set; }
         //ELIMINAR LA PLURALIZACION DE LAS TABLAS
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

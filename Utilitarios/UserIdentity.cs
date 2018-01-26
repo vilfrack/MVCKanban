@@ -37,5 +37,19 @@ namespace MVCKanban.Utilitarios
 
         //    return true;
         //}
+        //CREAMOS EL METODO CUANDO SE ESTE EN EL MODULO DE PERMISOS
+        public List<IdentityRole> GetRolByUser()
+        {
+
+            string idUser = GetIdUser();
+
+            var RolByUser = (db.Users
+                    .Where(u => u.Id == idUser)
+                    .SelectMany(u => u.Roles)
+                    .Join(db.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r)
+                    ).ToList();
+
+            return RolByUser;
+        }
     }
 }

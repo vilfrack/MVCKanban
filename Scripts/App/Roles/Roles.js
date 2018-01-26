@@ -1,17 +1,7 @@
 ﻿//CUANDO CERREMOS EL MODAL
 $("button[data-dismiss='modal']").click(function () {
-    $('#login').val('');
-    $('#password').val('');
-    $('#Nombre').val('');
-    $('#Apellido').val('');
-    $('#Email').val('');
-    $('#file').val('');
-    $('#alert_success').hide();
-    $(".fileinput-remove-button").click();
-    $("#btnEnviar").prop('disabled', false);
-    $('#alert_danger').hide();
-    $("#btnEliminar").prop('disabled', false);
-    $("#btnEnviarEditar").prop('disabled', false);
+    $('#Name').val('');
+
     esconderMensajes();
 });
 //AL HACER CLICK EN EL BOTON ELIMINAR QUE ESTA EN LA TABLA, ESTE OBTIENE EL ID Y SE LO ENVIA AL HIDDEN QUE ESTA EN EL MODAL DE ELIMINAR
@@ -159,8 +149,8 @@ $("#formCreate").submit(function (e) {
 });
 //CUANDO SE DE CLICK A EDITAR DESDE LA TABLA
 $("#tableRoles").on('click', 'tr #editar', function () {
-    var idTask = $(this).parents("tr").find("td").eq(0).html();
-    var url = "/Roles/Edit?id=" + idTask + ""; // Establecer URL de la acción
+    var idRoles = $(this).parents("tr").find("td").eq(0).html();
+    var url = "/Roles/Edit?id=" + idRoles + ""; // Establecer URL de la acción
     $("#btnEnviarEditar").prop('disabled', false);
     $("#contenedor-editar").load(url);
 

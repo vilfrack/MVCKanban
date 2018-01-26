@@ -8,6 +8,11 @@ namespace MVCKanban.ViewModel
         public string IDUser { get; set; }
         public int IDPerfil { get; set; }
 
+        [Display(Name = "UserName")]
+        [Required(ErrorMessage = "El campo {0} No puede quedar vacio")]
+        [StringLength(200, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 5)]
+        public string UserName { get; set; }
+
         [Display(Name = "Password")]
         [Required(ErrorMessage = "El campo {0} No puede quedar vacio")]
         [StringLength(200, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 6)]
@@ -19,8 +24,8 @@ namespace MVCKanban.ViewModel
         public string Nombre { get; set; }
 
         [Display(Name = "Apellido")]
-        [Required(ErrorMessage = "El campo {0} No puede quedar vacio")]
-        [StringLength(15, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 3)]
+        //[Required(ErrorMessage = "El campo {0} No puede quedar vacio")]
+        //[StringLength(15, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 3)]
         public string Apellido { get; set; }
 
         [Display(Name = "Email")]

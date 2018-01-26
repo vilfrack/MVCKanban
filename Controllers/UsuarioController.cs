@@ -73,7 +73,7 @@ namespace MVCKanban.Controllers
                 bool bsuccess = false;
                 if (ModelState.IsValid)
                 {
-                    if (!(db.Users.Any(u => u.UserName == UserPerfil.Email)))
+                    if (!(db.Users.Any(u => u.UserName == UserPerfil.UserName)))
                     {
 
                         var userStore = new UserStore<ApplicationUser>(db);
@@ -82,7 +82,7 @@ namespace MVCKanban.Controllers
                         {
                             Email = UserPerfil.Email,
                             PasswordHash = UserPerfil.Password,
-                            UserName = UserPerfil.Email,
+                            UserName = UserPerfil.UserName,
                         };
                         userManager.Create(userToInsert, UserPerfil.Password);
                         string ruta = string.Empty;

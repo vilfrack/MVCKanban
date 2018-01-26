@@ -171,6 +171,8 @@
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ModuloController.cs" />
+    <Compile Include="Controllers\PermisosController.cs" />
     <Compile Include="Controllers\RequerimientoController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -184,13 +186,19 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MaestroTaskStatus.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Modulo.cs" />
     <Compile Include="Models\Perfiles.cs" />
+    <Compile Include="Models\PermisoPorRol.cs" />
+    <Compile Include="Models\Permisos.cs" />
+    <Compile Include="Models\PermisosPorUsuarios.cs" />
     <Compile Include="Models\Requerimiento.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilitarios\UserIdentity.cs" />
     <Compile Include="Utilitarios\Utilitarios.cs" />
+    <Compile Include="ViewModel\ViewGetPermisos.cs" />
+    <Compile Include="ViewModel\ViewPermisos.cs" />
     <Compile Include="ViewModel\ViewRol.cs" />
     <Compile Include="ViewModel\ViewTaskFile.cs" />
     <Compile Include="ViewModel\ViewUserPerfil.cs" />
@@ -258,6 +266,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Modulo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -284,6 +293,7 @@
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
+    <Content Include="Views\Permisos\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

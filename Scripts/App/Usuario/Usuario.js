@@ -155,8 +155,8 @@ $("#formCreate").submit(function (e) {
 });
 //CUANDO SE DE CLICK A EDITAR DESDE LA TABLA
 $("#tableUsers").on('click', 'tr #editar', function () {
-    var idTask = $(this).parents("tr").find("td").eq(0).html();
-    var url = "/Usuario/Edit?id=" + idTask + ""; // Establecer URL de la acción
+    var idUser = $(this).parents("tr").find("td").eq(0).html();
+    var url = "/Usuario/Edit?id=" + idUser + ""; // Establecer URL de la acción
     $("#btnEnviarEditar").prop('disabled', false);
     $("#contenedor-editar").load(url);
 
@@ -192,6 +192,8 @@ function LoadGridUser() {
 function esconderMensajes() {
     $('#alert_danger').hide();
     $('#alert_success').hide();
+    $('#alert_danger_edit').hide();
+    $('#alert_success_edit').hide();
     $('#alert_success_eliminar').hide();
     $('#alert_danger_eliminar').hide();
 }

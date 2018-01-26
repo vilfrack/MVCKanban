@@ -34,11 +34,6 @@ namespace MVCKanban.Utilitarios
                 {
                     if (Archivo != null && Archivo.ContentLength > 0)
                     {
-                        //var originalDirectory = new DirectoryInfo(string.Format("~/Images/" + id));
-                        //string ruta = Path.Combine(Server.MapPath("~/Images/" + id));
-                        //string ruta_virtual = "~/Images/" + id;
-                        //string pathString = ruta;
-                        //var fileName1 = Path.GetFileName(Archivo.FileName);
                         bool isExists = System.IO.Directory.Exists(ruta);
 
                         if (!isExists)

@@ -3,6 +3,14 @@
     SelectList DropDepartamento = ViewBag.Depatarmento;
 }
 @* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
+<div id="div_UserName" class="form-group">
+    <label class="col-sm-2 control-label">UserName</label>
+    <div class="col-sm-10">
+        <input type="text" id="UserName" class="form-control" name="UserName" placeholder="UserName">
+        @* EL ERROR DEBE LLAMARSE IGUAL AL MODEL *@
+        <label id="Error_UserName" class="control-label"></label>
+    </div>
+</div>
 <div id="div_Email" class="form-group">
     <label class="col-sm-2 control-label">Email</label>
     <div class="col-sm-10">

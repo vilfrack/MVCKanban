@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MVCKanban.Models
+namespace MVCKanban.ViewModel
 {
     public class ExternalLoginConfirmationViewModel
     {

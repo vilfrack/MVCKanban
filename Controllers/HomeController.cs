@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace MVCKanban.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
 

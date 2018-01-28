@@ -115,25 +115,15 @@ namespace MVCKanban.Controllers
             List<IdentityRole> ListRolByUser = userIdentity.GetRolByUser();
 
             List<dynamic> listPermisosRolUser = new List<dynamic>();
-            // PermisosPorRoles
-            foreach (var item in ListRolByUser)
-            {
                 var PermisosRolUser = (from p in db.Permisos
                                        join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
-                                       //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorUsuarios
                                        into tempPorUsuarios
-                                       //SE HACE EL SEGUNDO JOIN
                                        join pR in db.PermisoPorRol on p.PermisoID equals pR.PermisoID
-                                       //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorRol
                                        into tempPorRol
-                                       //SE HACE LA CONSULTA tempPorUsuarios
                                        from lastPorUsuarios in tempPorUsuarios.DefaultIfEmpty()
-                                           // EL RESULTADO DE lastPorUsuarios SE RELACIONA CON MODULOS
                                        join mU in db.Modulo on lastPorUsuarios.ModuloID equals mU.ModuloID
-                                       //SE HACE LA CONSULTA tempPorRol
                                        from lastPorRol in tempPorRol.DefaultIfEmpty()
                                        join mR in db.Modulo on lastPorRol.ModuloID equals mR.ModuloID
-                                       //se hacen los where
                                        where lastPorUsuarios.UsuarioID == usuario
                                        select new
                                        {
@@ -141,10 +131,8 @@ namespace MVCKanban.Controllers
                                            Descripcion = p.Descripcion,
                                            UsuarioID = lastPorUsuarios.UsuarioID == null ? default(string) : lastPorUsuarios.UsuarioID,
                                            RolID = lastPorRol.RoleID == null ? default(string) : lastPorRol.RoleID,
-                                           //chek para validar si tienen permisos o no
                                            CheekRol = lastPorRol.RoleID == null ? false : true,
                                            CheekUsuarios = lastPorUsuarios.UsuarioID == null ? false : true,
-                                           //MODULOS POR USUARIO Y POR ROL
                                            ModuloIDPorUsuarios = lastPorUsuarios.ModuloID.Equals(null) ? default(int) : lastPorUsuarios.ModuloID,
                                            ModuloIDPorRol = lastPorRol.ModuloID.Equals(null) ? default(int) : lastPorRol.ModuloID,
                                            ModuloRolDes = mR.Descripcion,
@@ -165,7 +153,6 @@ namespace MVCKanban.Controllers
                                           }).ToList();
 
                 listPermisosRolUser.AddRange(VarModulosPermisos);
-            }
             List<ViewPermisos> viewPermisos = new List<ViewPermisos>();
             var varPermisos = db.Permisos.ToList();
             foreach (var item in listPermisosRolUser)
@@ -187,11 +174,8 @@ namespace MVCKanban.Controllers
             }
             var PermisosUser = (from p in db.Permisos
                                 join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
-                                //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorUsuarios
                                 into tempPorUsuarios
-                                ////SE HACE LA CONSULTA tempPorUsuarios
                                 from lastPorUsuarios in tempPorUsuarios.DefaultIfEmpty()
-                                    // EL RESULTADO DE lastPorUsuarios SE RELACIONA CON MODULOS
                                 join mU in db.Modulo on lastPorUsuarios.ModuloID equals mU.ModuloID
                                 where lastPorUsuarios.UsuarioID == usuario
                                 select new
@@ -248,36 +232,19 @@ namespace MVCKanban.Controllers
             List<dynamic> listPermisosRolUser = new List<dynamic>();
 
                 var PermisosRolUser = (from p in db.Permisos
-                                       //join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
-                                       ////SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorUsuarios
-                                       //into tempPorUsuarios
-                                       //SE HACE EL SEGUNDO JOIN
                                        join pR in db.PermisoPorRol on p.PermisoID equals pR.PermisoID
-                                       //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorRol
                                        into tempPorRol
-                                       //SE HACE LA CONSULTA tempPorUsuarios
-                                       //from lastPorUsuarios in tempPorUsuarios.DefaultIfEmpty()
-                                           // EL RESULTADO DE lastPorUsuarios SE RELACIONA CON MODULOS
-                                       //join mU in db.Modulo on lastPorUsuarios.ModuloID equals mU.ModuloID
-                                       //SE HACE LA CONSULTA tempPorRol
                                        from lastPorRol in tempPorRol.DefaultIfEmpty()
                                        join mR in db.Modulo on lastPorRol.ModuloID equals mR.ModuloID
-                                       //se hacen los where
                                        where lastPorRol.RoleID == Rol
                                        select new
                                        {
                                            PermisoID = p.PermisoID,
                                            Descripcion = p.Descripcion,
-                                           //UsuarioID = lastPorUsuarios.UsuarioID == null ? default(string) : lastPorUsuarios.UsuarioID,
                                            RolID = lastPorRol.RoleID == null ? default(string) : lastPorRol.RoleID,
-                                           //chek para validar si tienen permisos o no
                                            CheekRol = lastPorRol.RoleID == null ? false : true,
-                                           //CheekUsuarios = lastPorUsuarios.UsuarioID == null ? false : true,
-                                           //MODULOS POR USUARIO Y POR ROL
-                                           //ModuloIDPorUsuarios = lastPorUsuarios.ModuloID.Equals(null) ? default(int) : lastPorUsuarios.ModuloID,
                                            ModuloIDPorRol = lastPorRol.ModuloID.Equals(null) ? default(int) : lastPorRol.ModuloID,
                                            ModuloRolDes = mR.Descripcion,
-                                           //ModuloUsuDes = mU.Descripcion,
                                            ModuloID = mR.ModuloID
                                        }).ToList();
 
@@ -326,9 +293,7 @@ namespace MVCKanban.Controllers
                                    PermisoID = p.PermisoID,
                                    Descripcion = p.Descripcion,
                                    RolID = lastPorRol.RoleID == null ? default(string) : lastPorRol.RoleID,
-                                   //chek para validar si tienen permisos o no
                                    CheekRol = lastPorRol.RoleID == null ? false : true,
-                                   //MODULOS POR USUARIO Y POR ROL
                                    ModuloIDPorRol = lastPorRol.ModuloID.Equals(null) ? default(int) : lastPorRol.ModuloID,
                                    ModuloRolDes = lastModulo.Descripcion,
                                    ModuloID = lastPorRol.ModuloID

@@ -8,7 +8,7 @@
     @Styles.Render("~/Content/FileinputCSS")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrapJS")
-    @Scripts.Render("~/bundles/jquery-ui")
+
     @Scripts.Render("~/bundles/slimscroll")
     @Scripts.Render("~/bundles/datepicker")
     @Scripts.Render("~/bundles/adminlte")
@@ -457,6 +457,7 @@
                         </ul>
                     </li>
                     <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+                    <li><a href="@Url.Action("index","Kanban")"><i class="fa fa-table"></i> <span>Cuadro Kanban</span></a></li>
                     <li><a href="@Url.Action("index","Requerimiento")"><i class="fa  fa-pencil-square-o"></i> <span>Crear Requerimiento</span></a></li>
 
 

@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace MVCKanban.Controllers
 {
+    [Authorize]
     public class UsuarioController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

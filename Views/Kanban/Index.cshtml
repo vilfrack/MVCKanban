@@ -3,6 +3,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Styles.Render("~/bundles/KanbanCss")
 <h2>Task</h2>
 <div class="row">
     <section id="contenido">
@@ -16,12 +17,12 @@
                         {
                             if (item.StatusIDActual == 1)
                             {
-                                <div class="portlet" id="@item.TaskID">
+                                <div class="portlet" id="@item.RequerimientoID">
                                     <div class="portlet-content">
                                         <div class="postit-container">
                                             <div id="index_0" class="panel panel-success">
-                                                <div class="panel-heading">#@item.TaskID - @item.Titulo</div>
-                                                <div class="panel-body" onclick="getID(@item.TaskID);">
+                                                <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
+                                                <div class="panel-body" onclick="getID(@item.RequerimientoID);">
                                                     @item.Descripcion
                                                 </div>
                                                 <div class="panel-footer panel-custom">Panel footer</div>
@@ -45,12 +46,12 @@
                         {
                             if (item.StatusIDActual == 2)
                             {
-                                <div class="portlet" id="@item.TaskID">
+                                <div class="portlet" id="@item.RequerimientoID">
                                     <div class="portlet-content">
                                         <div class="postit-container">
                                             <div id="index_0" class="panel panel-danger">
-                                                <div class="panel-heading">#@item.TaskID - @item.Titulo</div>
-                                                <div class="panel-body" onclick="getID(@item.TaskID);">
+                                                <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
+                                                <div class="panel-body" onclick="getID(@item.RequerimientoID);">
                                                     @item.Descripcion
                                                 </div>
                                                 <div class="panel-footer panel-custom">Panel footer</div>
@@ -73,12 +74,12 @@
                         {
                             if (item.StatusIDActual == 3)
                             {
-                                <div class="portlet" id="@item.TaskID">
+                                <div class="portlet" id="@item.RequerimientoID">
                                     <div class="portlet-content">
                                         <div class="postit-container">
                                             <div id="index_0" class="panel panel-primary">
-                                                <div class="panel-heading">#@item.TaskID - @item.Titulo</div>
-                                                <div class="panel-body" onclick="getID(@item.TaskID);">
+                                                <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
+                                                <div class="panel-body" onclick="getID(@item.RequerimientoID);">
                                                     @item.Descripcion
                                                 </div>
                                                 <div class="panel-footer panel-custom">Panel footer</div>
@@ -102,12 +103,12 @@
                         {
                             if (item.StatusIDActual == 4)
                             {
-                                <div class="portlet" id="@item.TaskID">
+                                <div class="portlet" id="@item.RequerimientoID">
                                     <div class="portlet-content">
                                         <div class="postit-container">
                                             <div id="index_0" class="panel panel-primary">
-                                                <div class="panel-heading">#@item.TaskID - @item.Titulo</div>
-                                                <div class="panel-body" onclick="getID(@item.TaskID);">
+                                                <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
+                                                <div class="panel-body" onclick="getID(@item.RequerimientoID);">
                                                     @item.Descripcion
                                                 </div>
                                                 <div class="panel-footer panel-custom">Panel footer</div>
@@ -133,6 +134,7 @@
             </div>
         </div>
     </div>
+
     <script>
         $( function() {
             $(".column").sortable({

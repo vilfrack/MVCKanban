@@ -12,6 +12,7 @@ using System.IO;
 
 namespace MVCKanban.Controllers
 {
+    [Authorize]
     public class KanbanController : Controller
     {
 

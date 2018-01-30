@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace MVCKanban.Controllers
 {
+    [Authorize]
     public class RolesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

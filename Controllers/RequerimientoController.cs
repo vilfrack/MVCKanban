@@ -11,6 +11,7 @@ using Models;
 
 namespace MVCKanban.Controllers
 {
+    [Authorize]
     public class RequerimientoController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

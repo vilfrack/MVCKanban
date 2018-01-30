@@ -203,6 +203,7 @@
     <Content Include="Content\fileinput.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\ionicons.min.css" />
+    <Content Include="Content\kanban.css" />
     <Content Include="Content\_all-skins.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -244,7 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Kanban\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -276,6 +276,8 @@
     <Content Include="Views\Modulo\Create.cshtml" />
     <Content Include="Views\Modulo\Edit.cshtml" />
     <Content Include="Views\Modulo\Details.cshtml" />
+    <Content Include="Views\Kanban\Index.cshtml" />
+    <Content Include="Views\Kanban\detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">

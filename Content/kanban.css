@@ -1,0 +1,24 @@
+﻿#contenedor {
+background:#f1f1f1;
+}
+.modal-header label {
+    font-size:12px;
+    color:#717171;
+}
+
+.FotoPerfil {
+    width:30px;
+    height:30px;
+}
+.bordes {
+      color:rgba(117, 116, 116, 0.83);
+ border-top: 0.1px solid rgba(116, 115, 115, 0.78);
+ border-bottom: 0.1px solid rgba(116, 115, 115, 0.78);
+ padding: 5px 0 5px 0;
+}
+.Comentario {
+    margin-bottom:5px;
+}
+.paddingTop {
+    padding-top:25px;
+}

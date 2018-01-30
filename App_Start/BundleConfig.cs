@@ -26,7 +26,14 @@ namespace MVCKanban
             bundles.Add(new ScriptBundle("~/bundles/bootstrapJS").Include(
 "~/Scripts/bootstrap.min.js"));
 
-               bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new ScriptBundle("~/bundles/DataPikerCss").Include(
+            "~/Content/bootstrap-datepicker.css").IncludeDirectory("~/Content", ".css"));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/KanbanCss").Include(
+                "~/Content/kanban.css").IncludeDirectory("~/Content", ".css"));
+
+            bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/_all-skins.min.css",
                       "~/Content/bootstrap-datepicker.min.css",
@@ -66,6 +73,8 @@ namespace MVCKanban
             bundles.Add(new ScriptBundle("~/bundles/scriptModulos").Include(
               "~/Scripts/App/Modulo/Modulo.js").IncludeDirectory("~/Scripts", ".js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/DataPikerJs").Include(
+    "~/Scripts/bootstrap-datepicker.js").IncludeDirectory("~/Scripts", ".js"));
         }
     }
 }

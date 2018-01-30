@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using MVCKanban.Models;
+using Models;
 using MVCKanban.Utilitarios;
 using MVCKanban.ViewModel;
 using System;

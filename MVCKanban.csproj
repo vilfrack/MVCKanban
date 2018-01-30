@@ -170,6 +170,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KanbanController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModuloController.cs" />
     <Compile Include="Controllers\PermisosController.cs" />
@@ -181,22 +182,12 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModel\AccountViewModels.cs" />
-    <Compile Include="Models\Departamento.cs" />
-    <Compile Include="Models\Files.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\MaestroTaskStatus.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Modulo.cs" />
-    <Compile Include="Models\Perfiles.cs" />
-    <Compile Include="Models\PermisoPorRol.cs" />
-    <Compile Include="Models\Permisos.cs" />
-    <Compile Include="Models\PermisosPorUsuarios.cs" />
-    <Compile Include="Models\Requerimiento.cs" />
-    <Compile Include="Models\Status.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilitarios\UserIdentity.cs" />
     <Compile Include="Utilitarios\Utilitarios.cs" />
+    <Compile Include="ViewModel\ManageViewModels.cs" />
+    <Compile Include="ViewModel\ViewComentario.cs" />
     <Compile Include="ViewModel\ViewGetPermisos.cs" />
     <Compile Include="ViewModel\ViewPermisos.cs" />
     <Compile Include="ViewModel\ViewRol.cs" />
@@ -253,6 +244,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Kanban\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -284,6 +276,16 @@
     <Content Include="Views\Modulo\Create.cshtml" />
     <Content Include="Views\Modulo\Edit.cshtml" />
     <Content Include="Views\Modulo\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{5a9ece17-64ac-41ae-8902-720e54b5b16d}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Permisos\Permisos.csproj">
+      <Project>{12359dd6-383a-4e4a-a085-1e87353a7e26}</Project>
+      <Name>Permisos</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

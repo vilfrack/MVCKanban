@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using MVCKanban.Models;
 using MVCKanban.Utilitarios;
 using System.IO;
 using MVCKanban.ViewModel;
+using Models;
 
 namespace MVCKanban.Controllers
 {

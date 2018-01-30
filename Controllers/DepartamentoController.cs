@@ -1,4 +1,4 @@
-﻿using MVCKanban.Models;
+﻿using Models;
 using MVCKanban.Utilitarios;
 using System;
 using System.Linq;

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
-namespace MVCKanban.Models
+namespace MVCKanban.ViewModel
 {
     public class IndexViewModel
     {

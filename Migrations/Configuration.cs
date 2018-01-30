@@ -1,3 +1,4 @@
+using Models;
 namespace MVCKanban.Migrations
 {
     using System;
@@ -5,7 +6,7 @@ namespace MVCKanban.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using Models;
-    internal sealed class Configuration : DbMigrationsConfiguration<MVCKanban.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
@@ -13,7 +14,7 @@ namespace MVCKanban.Migrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(MVCKanban.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             //CREAMOS EL DEPARTAMENTO DE SISTEMAS
             context.Departamento.AddOrUpdate(

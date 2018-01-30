@@ -35,6 +35,6 @@ namespace MVCKanban.ViewModel
 
         public string NombreCompletoAsignado { get; set; }
         //SE LLAMA A LA VIEWMODEL QUE ESTA EN VIEWCOMENTARIO
-        //public List<ViewComentarioPerfiles> ComentarioPerfiles { get; set; }
+        public List<ViewComentarioPerfiles> ComentarioPerfiles { get; set; }
     }
 }

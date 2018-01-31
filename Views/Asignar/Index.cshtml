@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MVCKanban.ViewModel.ViewAsignar>
+
+<div id="div_departamento" class="form-group validate">
+    <div class="col-sm-10">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                @Html.Hidden("TaskID", item.TaskID)
+                <div class="col-sm-5 col-md-3">
+                    <div class="thumbnail">
+                        <img src="@Url.Content(item.rutaImg)" alt="...">
+                        <div class="caption">
+                            <label> @item.Apellido &nbsp; @item.Nombre </label><br />
+                            <div class="radio">
+                                @if (item.UsuarioID == item.UsuarioAsignado)
+                                {
+                                    <label><input type="radio" name="asignado" checked value="@item.UsuarioID">Asignar</label>
+                                }
+                                else
+                                {
+                                    <label><input type="radio" name="asignado" value="@item.UsuarioID">Asignar</label>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+
+
+<div id="alert_success" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
+<div id="alert_danger" class="alert alert-danger" role="alert"></div>
+
+
+@Scripts.Render("~/bundles/Asignar")
+<script>
+    esconderMensajes();
+</script>
+
+@* PARA HACER CHECK A LAS IMAGENES     https://codepen.io/kosukehorai/pen/pRwKjg*@

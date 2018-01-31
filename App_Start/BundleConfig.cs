@@ -79,6 +79,9 @@ namespace MVCKanban
             bundles.Add(new ScriptBundle("~/bundles/DataPikerJs").Include(
              "~/Scripts/bootstrap-datepicker.js").IncludeDirectory("~/Scripts", ".js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/Asignar").Include(
+             "~/Scripts/Asignar/Asignar.js").IncludeDirectory("~/Scripts", ".js"));
+
 
         }
     }

@@ -1,0 +1,25 @@
+﻿@Styles.Render("~/Content/DatatableCSS")
+@Scripts.Render("~/bundles/DatatableJS")
+<h1>Requerimientos </h1>
+<table id="tableRequerimiento" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th>Solicitante</th>
+            <th>Asignado</th>
+            <th>Fecha de solicitud</th>
+            <th><span class="glyphicon glyphicon glyphicon-asterisk" aria-hidden="true"></span> Acciones </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<script>
+    $(function () {
+        LoadGrid();
+    });
+
+</script>
+
+

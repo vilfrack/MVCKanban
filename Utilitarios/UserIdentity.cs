@@ -50,5 +50,13 @@ namespace MVCKanban.Utilitarios
 
             return RolByUser;
         }
+        public int GetDepartByIDUser(string UsuarioID)
+        {
+            var departamento = (from depart in db.Departamento
+                                join perfil in db.Perfiles on depart.IDDepartamento equals perfil.IDDepartamento
+                                where perfil.UsuarioID == UsuarioID
+                                select depart.IDDepartamento).SingleOrDefault();
+            return departamento;
+        }
     }
 }

@@ -168,6 +168,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AsignarController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KanbanController.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Utilitarios\UserIdentity.cs" />
     <Compile Include="Utilitarios\Utilitarios.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
+    <Compile Include="ViewModel\ViewAsignar.cs" />
     <Compile Include="ViewModel\ViewComentario.cs" />
     <Compile Include="ViewModel\ViewGetPermisos.cs" />
     <Compile Include="ViewModel\ViewPermisos.cs" />
@@ -210,6 +212,7 @@
     <Content Include="Global.asax" />
     <Content Include="Img\user2-160x160.jpg" />
     <Content Include="Scripts\adminlte.min.js" />
+    <Content Include="Scripts\App\Asignar\Asignar.js" />
     <Content Include="Scripts\App\Departamento\Departamento.js" />
     <Content Include="Scripts\App\Modulo\Modulo.js" />
     <Content Include="Scripts\App\Requerimiento\Requerimiento.js" />
@@ -278,6 +281,9 @@
     <Content Include="Views\Modulo\Details.cshtml" />
     <Content Include="Views\Kanban\Index.cshtml" />
     <Content Include="Views\Kanban\detail.cshtml" />
+    <Content Include="Views\Asignar\Index.cshtml" />
+    <Content Include="Views\Asignar\Details.cshtml" />
+    <Content Include="Views\Asignar\asignar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">

@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Models.Requerimiento>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/bundles/KanbanCss")
+
+<div class="row">
+    <section id="contenido">
+        <div class="contenedor">
+            <div class="panel panel-success">
+                <div class="panel-heading">Tickets en prueba/realizados</div>
+                <div class="panel-body" id="divRealizados">
+                    <div id="divSubRealizados" class="column">
+                        @foreach (var item in Model)
+                        {
+                            if (item.StatusIDActual == 3)
+                            {
+                                <div class="portlet" id="@item.RequerimientoID">
+                                    <div class="portlet-content">
+                                        <div class="postit-container">
+                                            <div id="index_0" class="panel panel-primary">
+                                                <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
+                                                <div class="panel-body" onclick="getIDRevision(@item.RequerimientoID);">
+                                                    @item.Descripcion
+                                                </div>
+                                                <div class="panel-footer panel-custom">Panel footer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="contenedor">
+            <div class="panel panel-danger">
+                <div class="panel-heading">Tickets rechazados</div>
+                <div class="panel-body" id="divRechazados">
+                    <div id="divSubRechazados" class="column">
+                        @foreach (var item in Model)
+                        {
+                            if (item.StatusIDActual == 4)
+                            {
+                                <div class="portlet" id="@item.RequerimientoID">
+                                    <div class="portlet-content">
+                                        <div class="postit-container">
+                                            <div id="index_0" class="panel panel-primary">
+                                                <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
+                                                <div class="panel-body" onclick="getIDRevision(@item.RequerimientoID);">
+                                                    @item.Descripcion
+                                                </div>
+                                                <div class="panel-footer panel-custom">Panel footer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- MODAL-->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div id="contenedor-modal">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $( function() {
+            $(".column").sortable({
+                connectWith: ".column",
+                handle: ".portlet-content",
+                cancel: ".portlet-toggle",
+                placeholder: "portlet-placeholder ui-corner-all"
+            });
+
+            $( ".portlet" )
+              .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+              .find( ".portlet-content" )
+                .addClass( "ui-widget-header ui-corner-all" )
+                .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+
+            //se cambia el cursor
+            $('.portlet').hover( function() {
+                // the selector should match your link
+                $(this).css('cursor', 'pointer');
+            }
+            )
+
+
+        });
+
+        function getIDRevision(TaskID) {
+            var url = "/Revision/detail?sid=" + TaskID + ""; // Establecer URL de la acción
+            $("#contenedor-modal").load(url);
+            $('#modal').modal('show');
+        }
+    </script>
+</div>
+
+

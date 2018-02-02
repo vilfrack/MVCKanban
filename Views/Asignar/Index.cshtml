@@ -1,45 +1,46 @@
-﻿@model IEnumerable<MVCKanban.ViewModel.ViewAsignar>
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<div id="div_departamento" class="form-group validate">
-    <div class="col-sm-10">
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                @Html.Hidden("TaskID", item.TaskID)
-                <div class="col-sm-5 col-md-3">
-                    <div class="thumbnail">
-                        <img src="@Url.Content(item.rutaImg)" alt="...">
-                        <div class="caption">
-                            <label> @item.Apellido &nbsp; @item.Nombre </label><br />
-                            <div class="radio">
-                                @if (item.UsuarioID == item.UsuarioAsignado)
-                                {
-                                    <label><input type="radio" name="asignado" checked value="@item.UsuarioID">Asignar</label>
-                                }
-                                else
-                                {
-                                    <label><input type="radio" name="asignado" value="@item.UsuarioID">Asignar</label>
-                                }
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
+<div>
+    @Html.Action("Details", "Asignar")
 </div>
 
-
-
-<div id="alert_success" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
-<div id="alert_danger" class="alert alert-danger" role="alert"></div>
+@* data-backdrop=evita que el modal se cierre al hacer click fuera de el; data-keyboard=evita que el modal se cierre con la tecla esc*@
+<div class="modal fade" tabindex="-1" role="dialog" id="modalAsignar" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal" enctype="multipart/form-data" id="formAsignar">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Asignar requerimientos</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="contenedor-asignar">
+                        cargando...
+                    </div>
+                    @*@Html.Action("Create", "Users")*@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    @*<button type="button" id="btnSaveOperations" class="btn btn-primary">Save changes</button>*@
+                    <input type="submit" value="Enviar" class="btn btn-primary" id="btnEnviar">
+                    @*<button type="button" value="Enviar" class="btn btn-primary" id="btnEnviar">Enviar</button>*@
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 @Scripts.Render("~/bundles/Asignar")
 <script>
     esconderMensajes();
 </script>
+
+
+
 
 @* PARA HACER CHECK A LAS IMAGENES     https://codepen.io/kosukehorai/pen/pRwKjg*@

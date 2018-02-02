@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ModuloController.cs" />
     <Compile Include="Controllers\PermisosController.cs" />
     <Compile Include="Controllers\RequerimientoController.cs" />
+    <Compile Include="Controllers\RevisionController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
@@ -216,6 +217,7 @@
     <Content Include="Scripts\App\Departamento\Departamento.js" />
     <Content Include="Scripts\App\Modulo\Modulo.js" />
     <Content Include="Scripts\App\Requerimiento\Requerimiento.js" />
+    <Content Include="Scripts\App\Revision\Revision.js" />
     <Content Include="Scripts\App\Roles\Roles.js" />
     <Content Include="Scripts\App\Usuario\Usuario.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
@@ -284,6 +286,8 @@
     <Content Include="Views\Asignar\Index.cshtml" />
     <Content Include="Views\Asignar\Details.cshtml" />
     <Content Include="Views\Asignar\asignar.cshtml" />
+    <Content Include="Views\Revision\detail.cshtml" />
+    <Content Include="Views\Revision\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace MVCKanban.Controllers
 {
+    [Authorize]
     public class AsignarController : Controller
     {
         public UserIdentity userIdentity = new UserIdentity();

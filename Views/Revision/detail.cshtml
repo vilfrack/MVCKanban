@@ -1,0 +1,242 @@
+﻿@model MVCKanban.ViewModel.ViewTaskFile
+
+@{
+    //CREAMOS UNA INSTANCIA PARA VALIDAR EL PERMISO DE ASIGNAR
+    MVCKanban.Utilitarios.UserIdentity userIdentity = new MVCKanban.Utilitarios.UserIdentity();
+}
+
+@Html.HiddenFor(m => m.RequerimientoID, new { id = "TaskID" })
+
+<style>
+    #hiddenField {
+        display: none;
+    }
+</style>
+
+
+@Styles.Render("~/bundles/KanbanCss")
+@Styles.Render("~/bundles/DataPikerCss")
+
+<form class="form-horizontal" enctype="multipart/form-data" id="formKanban">
+    <div id="contenedor">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Caso #@Html.DisplayFor(m => m.RequerimientoID)  @Html.DisplayFor(m => m.Titulo)</h4>
+            <label>Estado: @Html.DisplayFor(m => m.status)</label><br />
+            @*<label>Numero del caso: @Html.DisplayFor(m => m.TaskID)</label>*@
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="col-sm-8">
+                    <div id="div_Titulo" class="form-group">
+                        <div class="col-sm-2">
+                            <label>Creado por:</label><br />
+                            <img src="@Url.Content(Model.Foto)" class="img-circle FotoPerfil" data-toggle="tooltip" data-placement="bottom" title="@Model.nombre" />
+                        </div>
+                        <div class="col-sm-4">
+                            @if (Model.FechaFinalizacion == null || Model.FechaFinalizacion == "")
+                            {
+                                <label>Fecha de entrega</label>
+                                <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                                    <input type="text" name="fechaEntrega" class="form-control">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                    <label id="Error_FechaEntrega" class="control-label"></label>
+                                </div>
+                            }
+                            else
+                            {
+                                <label>Fecha de entrega</label>
+                                <div class="input-group date">
+                                    <input type="text" name="fechaEntrega" class="form-control" value="@Model.FechaFinalizacion" readonly="readonly">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Asigando a:</label>
+                            <img src="@Url.Content(Model.FotoAsignado)" class="img-circle FotoPerfil" data-toggle="tooltip" data-placement="top" title="@Model.NombreCompletoAsignado" />
+
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Status :</label>
+                            <select name="status" class="form-control">
+                                <option value="0">Seleccionar</option>
+                                <option value="5">Finalizados</option>
+                            </select>
+                        </div>
+                    </div>
+                    @* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
+                    <div id="div_Descripcion" class="form-group">
+                        <div>
+                            <label>Descripcion del requerimiento</label>
+                            @Html.TextAreaFor(m => m.Descripcion, new { Class = "form-control", placeholder = "Descripcion", id = "txtDescripcion", rows = 3, @readonly = true })
+                            <label id="Error_Descripcion" class="control-label" for="inputError2"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div>
+                            <label>Archivos adjuntos</label>
+                            <input id="File" name="File" type="file" multiple>
+                        </div>
+                    </div>
+                    <div class="Comentario" id="div_Comentario">
+                        <label>Agregar Comentario</label>
+                        <textarea id="Comentario" class="form-control" name="Comentario" rows="3" placeholder="Comentario"></textarea>
+                        <label id="Error_Comentario" class="control-label"></label>
+                    </div>
+
+                    <div id="alert_success" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
+                    <div id="alert_danger" class="alert alert-danger" role="alert"></div>
+
+                    <div id="DivComentarios">
+
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.RequerimientoID)
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" id="btnEnviar" class="btn btn-primary">Save changes</button>
+        </div>
+    </div>
+</form>
+
+
+@Scripts.Render("~/bundles/DataPikerJs")
+@Scripts.Render("~/bundles/Revision")
+<script>
+
+    //$(function () {
+    //    $('[data-toggle="tooltip"]').tooltip();
+    //    $("#File").prop('disabled', true);
+    //})
+    //LoadComment();
+    //$('.DivDatapiker input').datepicker({
+    //    todayBtn: "linked",
+    //    autoclose: true,
+    //    todayHighlight: true
+    //});
+    LoadComment();
+    $('#File').fileinput({
+        language: 'es',
+        overwriteInitial: false,
+        initialPreviewShowDelete: false,
+        uploadAsync: false,
+        showCaption: true,
+        showPreview: true,
+        showRemove: true,
+        showUpload: false, // <------ just set this from true to false
+        maxFileCount: 3,
+        allowedFileExtensions: ['jpg','png','pdf'],
+        initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+        initialPreview: [
+              @foreach (var item in Model.ruta_virtual)
+              {
+                  <text>'@Url.Content(item)',</text>
+              }
+        ],
+
+        initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+    });
+    //$("#formKanban").submit(function (e) {
+    //    e.preventDefault();
+    //    var parametros = new FormData($(this)[0]);
+    //    //CREO EL AJAX
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Revision/Save",
+    //        cache: false,
+    //        contentType: false, //importante enviar este parametro en false
+    //        processData: false, //importante enviar este parametro en false
+    //        //CONVIERTO EL OBJETO EN FORMATO JSON
+    //        data: parametros,
+    //        dataType: "json",
+    //        success: function (data) {
+    //            if (data.success) {
+
+    //                $("#Error_Comentario").html('');
+    //                $("#div_Comentario").removeClass(" has-error has-feedback");
+
+    //                $('#alert_success').show("fast");
+    //                $('#alert_danger').hide();
+    //                $("#btnEnviar").prop('disabled', true);
+    //                LoadComment();
+    //            }
+    //            else {
+    //                //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
+    //                $.each(data.Errors, function (key, value) {
+    //                    //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
+    //                    //CREAR EN LO POSIBLE UNA CLASE QUE GUARDE ESTE CODIGO
+    //                    if (value != "true") {
+    //                        $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
+    //                        $("#div_" + key).addClass(" has-error has-feedback");
+    //                    } else {
+    //                        $("#Error_" + key).html('');
+    //                        $("#div_" + key).removeClass(" has-error has-feedback");
+    //                    }
+
+    //                });
+    //                if (data.status == 0) {
+    //                    $('#alert_danger').html("Debe seleccionar un Status");
+    //                    $('#alert_danger').show("fast");
+
+    //                    $('#alert_success').hide();
+    //                }
+    //            }
+
+    //        },
+    //        error: function (data) {
+    //            $('#alert_danger').html('error');
+    //            $('#alert_danger').show("fast");
+    //        },
+
+    //    });
+    //});
+
+    //function LoadComment(){
+    //    //CREO EL AJAX
+    //    var params = {
+    //        id: $('#TaskID').val()
+    //    };
+    //    $("#DivComentarios").empty();
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Revision/getComentario",
+    //        data: params,
+    //        dataType: "json",
+    //        success: function (data) {
+    //            $.each(data, function (key, value) {
+    //                console.log(value.rutaImg);
+    //                var date = new Date(parseInt(value.Fecha.substr(6)));
+    //                var month = date.getMonth() + 1;
+    //                var fecha = date.getDate() + "/" + month + "/" + date.getFullYear();
+    //                    var html = '<div class="bordes">' +
+    //                                ' <img src="../'+ value.rutaImg+'" class="img-circle FotoPerfil" />' +
+    //                                ' <label>'+value.Nombre+'</label>' +
+    //                                ' <label>'+value.Apellido+'</label>' +
+    //                                ' <label>'+fecha+'</label><br />' +
+    //                                ' <label>'+value.Comentario+'</label>' +
+    //                                '</div>';
+    //                $("#DivComentarios").append(html);
+    //            });
+    //        },
+    //        error: function (data) {
+
+    //        },
+
+    //    });
+    //}
+    //tooltip
+    $("button[data-dismiss='modal']").click(function () {
+        window.location.href = "@Url.Action("Index", "Revision")";
+    });
+    esconderMensaje();
+</script>

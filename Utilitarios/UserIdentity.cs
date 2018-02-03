@@ -58,5 +58,10 @@ namespace MVCKanban.Utilitarios
                                 select depart.IDDepartamento).SingleOrDefault();
             return departamento;
         }
+        public List<Perfiles> AllUserByDepart(int idDepartamento)
+        {
+            var perfil = db.Perfiles.Where(w => w.IDDepartamento == idDepartamento).ToList();
+            return perfil;
+        }
     }
 }

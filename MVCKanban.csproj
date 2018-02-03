@@ -169,6 +169,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AsignarController.cs" />
+    <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KanbanController.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="ViewModel\ManageViewModels.cs" />
     <Compile Include="ViewModel\ViewAsignar.cs" />
     <Compile Include="ViewModel\ViewComentario.cs" />
+    <Compile Include="ViewModel\ViewDashboard.cs" />
     <Compile Include="ViewModel\ViewGetPermisos.cs" />
     <Compile Include="ViewModel\ViewPermisos.cs" />
     <Compile Include="ViewModel\ViewRol.cs" />
@@ -250,6 +252,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DashBoard\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

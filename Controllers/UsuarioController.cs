@@ -42,7 +42,8 @@ namespace MVCKanban.Controllers
                             IDUser = u.Id,
                             login = u.UserName,
                             nombre = p.Nombre,
-                            apellido = p.Apellido
+                            apellido = p.Apellido,
+                            departamento = p.Departamento.departamento
                         }).ToList()
             };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
@@ -157,7 +158,8 @@ namespace MVCKanban.Controllers
                              Apellido = p.Apellido,
                              IDPerfil = p.IDPerfil,
                              Ruta = p.rutaImg,
-                             IDDepartamento = p.IDDepartamento
+                             IDDepartamento = p.IDDepartamento,
+                             UserName = u.UserName
                          }).SingleOrDefault();
 
 
@@ -178,8 +180,8 @@ namespace MVCKanban.Controllers
                 Apellido = query.Apellido,
                 Password = query.Password,
                 rutaImg = query.Ruta,
-                departamento = query.IDDepartamento
-                // Vendor = new SelectList(helper.GetDepartamento(), "IDDepartamento", "departamento")
+                departamento = query.IDDepartamento,
+                UserName = query.UserName
             };
             List<RolDto> RolDto = new List<RolDto>();
 

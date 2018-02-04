@@ -5,8 +5,16 @@
 @Html.HiddenFor(m => m.IDPerfil, new { id = "IDPerfil" })
 @Html.HiddenFor(m => m.IDUser, new { id = "IDUser" })
 
+<div id="div_UserName" class="form-group">
+    <label class="col-sm-2 control-label">UserName</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(m => m.UserName, new { Class = "form-control", placeholder = "UserName", id = "txtUserName" })
+        @* EL ERROR DEBE LLAMARSE IGUAL AL MODEL *@
+        <label id="Error_UserName" class="control-label"></label>
+    </div>
+</div>
 <div id="div_Email" class="form-group">
-    <label class="col-sm-2 control-label">Titulo</label>
+    <label class="col-sm-2 control-label">Email</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(m => m.Email, new { Class = "form-control", placeholder = "Email", id = "txtEmail" })
         <label id="Error_Email" class="control-label"></label>

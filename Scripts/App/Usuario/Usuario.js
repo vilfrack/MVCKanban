@@ -124,7 +124,7 @@ $("#formCreate").submit(function (e) {
                     $("#div_" + key).removeClass(" has-error has-feedback");
                 });
                 $('#alert_success').show("fast");
-                $("#btnEnviarEditar").prop('disabled', true);
+                $("#btnEnviar").prop('disabled', true);
                 $('#alert_danger').hide();
                 LoadGridUser();
             }
@@ -178,6 +178,7 @@ function LoadGridUser() {
           { "data": "login" },
           { "data": "nombre" },
            { "data": "apellido" },
+           { "data": "departamento" },
           {
               "data": null,
               defaultContent: "<button id='editar' class='btn btn-success btn-sm'" +

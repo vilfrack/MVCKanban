@@ -2,6 +2,7 @@
 //CUANDO CERREMOS EL MODAL
 $("button[data-dismiss='modal']").click(function () {
     $('#Descripcion').val('');
+    $("#btnEnviar").prop('disabled', false);
     esconderMensajes();
 });
 //AL HACER CLICK EN EL BOTON ELIMINAR QUE ESTA EN LA TABLA, ESTE OBTIENE EL ID Y SE LO ENVIA AL HIDDEN QUE ESTA EN EL MODAL DE ELIMINAR

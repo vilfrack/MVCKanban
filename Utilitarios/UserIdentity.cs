@@ -26,6 +26,11 @@ namespace MVCKanban.Utilitarios
             }
             return idUser;
         }
+        public string NameUser(string idUser) {
+            string NameUser = string.Empty;
+            NameUser = db.Users.Where(w => w.Id == idUser).Select(s => s.UserName).SingleOrDefault().ToString();
+            return NameUser;
+        }
         //public bool ValidarPermiso(AllPermisos permiso, AllModulos modulo)
         //{
         //    var usuario = GetIdUser();

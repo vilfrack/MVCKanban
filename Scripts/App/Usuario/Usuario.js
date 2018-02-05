@@ -73,9 +73,8 @@ $("#formEdit").submit(function (e) {
                     $("#Error_" + key).html('');
                     $("#div_" + key).removeClass(" has-error has-feedback");
                 });
-                $('#alert_success').show("fast");
-                $('#alert_success').show("fast");
-                $('#alert_danger').hide();
+                $('#alert_success_edit').show("fast");
+                $('#alert_danger_edit').hide();
                 LoadGridUser();
             }
             else {

@@ -17,6 +17,7 @@ namespace MVCKanban.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private Utilitarios.Utilitarios utl = new Utilitarios.Utilitarios();
+        private UserIdentity user = new UserIdentity();
         private GetErrors errors = new GetErrors();
 
         public ActionResult Index()
@@ -123,25 +124,28 @@ namespace MVCKanban.Controllers
             }
             catch
             {
+
                 return Json(new { success = false, Errors = errors.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
         }
 
         private string SaveUploadedFile(HttpPostedFileBase file, string id)
         {
+            string NameUsuario = user.NameUser(id);
             var originalDirectory = new DirectoryInfo(string.Format("~/Images/empleados/" + id));
             string ruta = Path.Combine(Server.MapPath("~/Images/empleados/" + id));
             string ruta_virtual = "~/Images/empleados/" + id;
             string pathString = ruta;
+            string extension = Path.GetExtension(file.FileName);
             bool isExists = System.IO.Directory.Exists(pathString);
 
             if (!isExists)
                 System.IO.Directory.CreateDirectory(pathString);
 
-            var path = string.Format("{0}\\{1}", pathString, file.FileName);
+            var path = string.Format("{0}\\{1}", pathString, NameUsuario+ extension);
 
             file.SaveAs(path);
-            return ruta_virtual + "/" + file.FileName;
+            return ruta_virtual + "/" + NameUsuario + extension;
         }
 
         public ActionResult Edit(string id)
@@ -223,6 +227,7 @@ namespace MVCKanban.Controllers
                                   select new
                                   {
                                       Id = u.Id,
+                                      UserName = u.UserName,
                                       Password = u.PasswordHash,
                                       Email = u.Email,
                                       Nombre = p.Nombre,
@@ -245,7 +250,7 @@ namespace MVCKanban.Controllers
                     var usu = userManager.FindById(userPerfil.IDUser);
                     usu.Email = userPerfil.Email;
                     usu.Id = userPerfil.IDUser;
-                    usu.UserName = userPerfil.Email;
+                    usu.UserName = userPerfil.UserName;
                     //se actualiza los resultados
                     userManager.Update(usu);
                     //cambiamos el password
@@ -313,6 +318,34 @@ namespace MVCKanban.Controllers
 
 
                 db.SaveChanges();
+                return Json(new { success = bsuccess });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false });
+            }
+        }
+        [HttpPost]
+        public ActionResult DeleteImage(int IDPerfil)
+        {
+            /* http://plugins.krajee.com/file-input-ajax-demo/3 */
+            try
+            {
+                bool bsuccess = false;
+                Perfiles deleteFiles = db.Perfiles.Where(d => d.IDPerfil == IDPerfil).SingleOrDefault();
+                if (deleteFiles != null)
+                {
+                    if (System.IO.File.Exists(Server.MapPath(deleteFiles.rutaImg)))
+                    {
+                        System.IO.File.Delete(Server.MapPath(deleteFiles.rutaImg));//investigar  Server.MapPath
+
+                        deleteFiles.rutaImg = string.Empty;
+                        db.SaveChanges();
+                        bsuccess = true;
+
+                    }
+                }
+
                 return Json(new { success = bsuccess });
             }
             catch (Exception ex)

@@ -94,7 +94,7 @@
         uploadUrl: '/file-upload-batch/2',
         language: 'es',
         overwriteInitial: false,
-        initialPreviewShowDelete: false,
+        initialPreviewShowDelete: true,
         uploadAsync: true,
         showCaption: true,
         showPreview: true,
@@ -112,6 +112,20 @@
 
             }
         ],
+        initialPreviewConfig: [
+             @{
+                if (Model.rutaImg !="")
+                {
+                   <text>
+                    {
+                        url: '/Usuario/DeleteImage/',
+                        key: @Model.IDPerfil,//parametro que enviamos via ajax/post para eliminar el archivo
+                        extra: { IDPerfil: @Model.IDPerfil}//investigar
+                    },
+                   </text>
+                }
+            }
+           ],
         initialPreviewFileType: 'image', // image is the default and can be overridden in config below
     });
     esconderMensajes();

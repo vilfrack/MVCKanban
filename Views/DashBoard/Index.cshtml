@@ -1,0 +1,255 @@
+﻿@model IEnumerable<MVCKanban.ViewModel.AplicoMensual>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/bundles/DataPikerCss")
+
+@*@Scripts.Render("~/bundles/scriptDashBoard")*@
+@Scripts.Render("~/bundles/DataPikerJs")
+@Scripts.Render("~/bundles/Chart")
+<h2>DashBoard</h2>
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Requerimientos Anuales</h4>
+            <div id="DivCantidadTask">
+                @*@Html.Action("CantidadTask", "DashBoard")*@
+                <div class="col-md-12">
+                    <canvas id="CantidadTask" width="800" height="600"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-6">
+            <h4>Requerimientos que cumplieron durante el año</h4>
+            <div>
+                <div class="col-md-12">
+                    <canvas id="AplicoTask" width="800" height="600"></canvas>
+                </div>
+                @*@Html.Action("DesarrolladorTask", "DashBoard")*@
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+
+        <form action="@Url.Action("Index", "DashBoard")" method="post">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>Fecha de Inicio</label>
+                    <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                        <input type="text" name="fechaInicio" id="fechaInicio" class="form-control">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Final</label>
+                    <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                        <input type="text" name="fechaFinal" id="fechaFinal" class="form-control">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" id="btnBuscar" class="btn btn-default">Buscar</button>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Cantidad de Requerimientos</h4>
+            <div>
+
+                <div class="col-md-12">
+                    <canvas id="TaskMensuales" width="256" height="175"></canvas>
+                </div>
+                @*@Html.Action("TaskMensuales", "DashBoard")*@
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <h4>Requerimientos que cumplieron en General</h4>
+            <div>
+                <div class="col-md-12">
+                    <canvas id="aplicoTaskGeneral" width="256" height="175"></canvas>
+                </div>
+                @*@Html.Action("DesarrolladorTiempo", "DashBoard")*@
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('.DivDatapiker input').datepicker({
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy/mm/dd'
+    });
+
+    CantidadTask();
+    TaskMensuales();
+    AplicoTask();
+    aplicoTaskGeneral();
+    @{
+        int enero, febrero, marzo, abri, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre = 0;
+    }
+    function CantidadTask() {
+        var ctx = document.getElementById("CantidadTask").getContext('2d');
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                datasets: [{
+                    label: "Rechazados",
+                    backgroundColor: "#E57373",
+                    data: @foreach (var item in Model.Where(w => w.statusNombre == "Rechazados").ToList())
+                            {
+                                <text>
+                                [
+                                     @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+                                ],
+                    </text>
+                            }
+                }, {
+                    label: "Asignados",
+                    backgroundColor: "#03A9F4",
+                    data: @foreach (var item in Model.Where(w => w.statusNombre == "Asignado").ToList())
+                            {
+                                <text>
+                                    [
+                                            @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+                                    ],
+                    </text>
+                            }
+                }, {
+                    label: "En desarrollo",
+                    backgroundColor: "#B3E5FC",
+                    data: @foreach (var item in Model.Where(w => w.statusNombre == "Desarrollo").ToList())
+                            {
+                                <text>
+                                    [
+                                            @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+                                    ],
+                    </text>
+                            }
+                }, {
+                    label: "Realizados",
+                    backgroundColor: "#81C784",
+                    data: @foreach (var item in Model.Where(w => w.statusNombre == "Realizados").ToList())
+                            {
+                                <text>
+                                    [
+                                            @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+                                    ],
+                    </text>
+                            }
+                }],
+
+            },
+        });
+    }
+
+    function TaskMensuales() {
+        var ctxx = $("#TaskMensuales").get(0).getContext("2d");
+        var datos = {
+            labels: ['Asignados', 'Desarrollo', 'Finalizados', 'Rechazados'],
+            datasets: [{
+                label: 'point',
+                //data: [10, 20, 30, 15],
+                data: @foreach (var item in Model.Select(s=> new { s.TotalAsignado,s.TotalDesarrollo,s.TotalRealizado,s.TotalRechazado }).Distinct().ToList())
+        {
+            <text>
+            [
+                    @item.TotalAsignado,@item.TotalDesarrollo,@item.TotalRealizado,@item.TotalRechazado
+            ],
+                </text>
+        }
+                backgroundColor: ['#03A9F4', '#B3E5FC', '#81C784', '#E57373']
+            }],
+        };
+        var myDoughnutChart = new Chart(ctxx, {
+            type: 'doughnut',
+            data: datos,
+            options: {
+                animation: {
+                    animateScale: true
+                }
+            }
+        });
+    }
+
+
+
+
+    function AplicoTask() {
+        var ctx = document.getElementById("AplicoTask").getContext('2d');
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                datasets: [{
+                    label: "No Aplico",
+                    backgroundColor: "#E57373",
+                    data: @foreach (var item in Model.Select(s=> new { s.noAplicoEnero, s.noAplicoFebrero, s.noAplicoMarzo, s.noAplicoAbril, s.noAplicoMayo, s.noAplicoJunio, s.noAplicoJulio, s.noAplicoAgosto, s.noAplicoSeptiembre, s.noAplicoOctubre, s.noAplicoNoviembre, s.noAplicoDiciembre }).Distinct())
+                    {
+                                <text>
+                                [
+                                        @item.noAplicoEnero,@item.noAplicoFebrero,@item.noAplicoMarzo,@item.noAplicoAbril,@item.noAplicoMayo,@item.noAplicoJunio,@item.noAplicoJulio,@item.noAplicoAgosto,@item.noAplicoSeptiembre,@item.noAplicoOctubre,@item.noAplicoNoviembre,@item.noAplicoDiciembre
+                                ],
+                    </text>
+                            }
+                }, {
+                    label: "Aplico",
+                    backgroundColor: "#81C784",
+                    data: @foreach (var item in Model.Select(s=> new { s.aplicoEnero, s.aplicoFebrero, s.aplicoMarzo, s.aplicoAbril, s.aplicoMayo, s.aplicoJunio, s.aplicoJulio, s.aplicoAgosto, s.aplicoSeptiembre, s.aplicoOctubre, s.aplicoNoviembre, s.aplicoDiciembre }).Distinct())
+                            {
+                                <text>
+                                [
+                                        @item.aplicoEnero,@item.aplicoFebrero,@item.aplicoMarzo,@item.aplicoAbril,@item.aplicoMayo,@item.aplicoJunio,@item.aplicoJulio,@item.aplicoAgosto,@item.aplicoSeptiembre,@item.aplicoOctubre,@item.aplicoNoviembre,@item.aplicoDiciembre
+                                ],
+                    </text>
+                            }
+                }],
+
+            },
+        });
+    }
+
+
+
+
+    function aplicoTaskGeneral() {
+        var ctxx = $("#aplicoTaskGeneral").get(0).getContext("2d");
+        var datos = {
+            labels: ['Aplico', 'No Aplico'],
+            datasets: [{
+                label: 'point',
+                data: @foreach (var item in Model.Select(s=> new { s.aplico, s.noAplico}).Distinct())
+                        {
+                            <text>
+                            [
+                                    @item.aplico,@item.noAplico
+                            ],
+                </text>
+                        }
+                backgroundColor: ['#81C784', '#E57373']
+            }],
+        };
+        var myDoughnutChart = new Chart(ctxx, {
+            type: 'doughnut',
+            data: datos,
+            options: {
+                animation: {
+                    animateScale: true
+                }
+            }
+        });
+    }
+
+
+
+</script>

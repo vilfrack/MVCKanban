@@ -84,6 +84,9 @@ namespace MVCKanban
 
             bundles.Add(new ScriptBundle("~/bundles/Revision").Include(
             "~/Scripts/Revision/Revision.js").IncludeDirectory("~/Scripts", ".js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/Chart").Include(
+            "~/Scripts/Chart.min.js").IncludeDirectory("~/Scripts", ".js"));
         }
     }
 }

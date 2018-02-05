@@ -240,22 +240,24 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="~/Img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <img src="~/Img/user2-160x160.jpg" class="user-image rutaImagen" alt="User Image">
+                                <span class="hidden-xs NombreUsuario">Alexander Pierce</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="~/Img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                                    <img src="~/Images/empleados/perfil.jpg" class="img-circle rutaImagen" alt="User Image">
+                                    @*<img src="~/Img/user2-160x160.jpg" class="img-circle" alt="User Image" >*@
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        <label class="NombreUsuario">Alexander Pierce - Web Developer</label>
+
                                     </p>
                                 </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-right">
-                                        @Html.ActionLink("Sign out", "LogOff", "Account", new { @class = "btn btn-default btn-flat" })
+                                        @Html.ActionLink("Sign out", "LogOff", "Account",null, new { @class = "btn btn-default btn-flat" })
                                     </div>
                                 </li>
                             </ul>
@@ -271,10 +273,10 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="~/Img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="~/Img/user2-160x160.jpg" class="img-circle rutaImagen" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Alexander Pierce</p>
+                        <p><label class="NombreUsuario">Alexander Pierce</label></p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
@@ -653,36 +655,29 @@
         <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->*@
     <script>
-        $.widget.bridge('uibutton', $.ui.button);
+        //$.widget.bridge('uibutton', $.ui.button);
+        $(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/UserImagen",
+                dataType: "json",
+                success: function (data) {
+                    var img = data.FotoPerfil;
+                    var rutaImg = img.replace("~", "");
+
+                    $(".rutaImagen").attr("src", rutaImg);
+                    $(".NombreUsuario").html(data.NombreUsuario);
+
+                },
+                error: function (data) {
+
+                },
+
+            });
+        })
+
+
     </script>
-    @*<!-- Bootstrap 3.3.7 -->
-        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!-- Morris.js charts -->
-        <script src="bower_components/raphael/raphael.min.js"></script>
-        <script src="bower_components/morris.js/morris.min.js"></script>
-        <!-- Sparkline -->
-        <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-        <!-- jvectormap -->
-        <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-        <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-        <!-- jQuery Knob Chart -->
-        <script src="bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
-        <!-- daterangepicker -->
-        @*<script src="bower_components/moment/min/moment.min.js"></script>
-        <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>*@
-    <!-- datepicker -->
-    @*<script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-        <!-- Slimscroll -->
-        <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-        <!-- FastClick -->
-        <script src="bower_components/fastclick/lib/fastclick.js"></script>
-        <!-- AdminLTE App -->
-        <script src="dist/js/adminlte.min.js"></script>
-        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="dist/js/pages/dashboard.js"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="dist/js/demo.js"></script>*@
+
 </body>
 </html>

@@ -14,7 +14,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace MVCKanban.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class MenuController : Controller
     {
         public UserIdentity userIdentity = new UserIdentity();

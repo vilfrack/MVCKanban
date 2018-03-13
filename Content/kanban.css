@@ -5,7 +5,7 @@ background:#f1f1f1;
     float: left;
     padding-bottom: 20px;
     margin: 10px 5px 0 10px;
-     /*width:22%;*/
+    width:260px;
   }
 .modal-header label {
     font-size:12px;
@@ -29,8 +29,8 @@ background:#f1f1f1;
     padding-top:25px;
 }
 .column {
-      /*font-size:10pt;*/
-    width: 220px;
+      font-size:10pt;
+    width: 200px;
     float: left;
     padding-bottom: 20px;
     margin: 5px 5px 0 5px;
@@ -38,8 +38,8 @@ background:#f1f1f1;
     border-radius:5px;
   }
     .Subcolumn {
-    /*font-size:10pt;*/
-    width: 250px;
+    font-size:10pt;
+    width: 200px;
     float: left;
     padding-bottom: 20px;
     margin: 5px 5px 0 5px;

@@ -4,6 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Styles.Render("~/bundles/KanbanCss")
+@Scripts.Render("~/bundles/jqueryUIjs")
+@Scripts.Render("~/bundles/Kanban")
+
 <h2>Task</h2>
 <div class="row">
     <section id="contenido">
@@ -49,7 +52,7 @@
                                 <div class="portlet" id="@item.RequerimientoID">
                                     <div class="portlet-content">
                                         <div class="postit-container">
-                                            <div id="index_0" class="panel panel-danger">
+                                            <div id="index_0" class="panel panel-info">
                                                 <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
                                                 <div class="panel-body" onclick="getID(@item.RequerimientoID);">
                                                     @item.Descripcion
@@ -77,7 +80,7 @@
                                 <div class="portlet" id="@item.RequerimientoID">
                                     <div class="portlet-content">
                                         <div class="postit-container">
-                                            <div id="index_0" class="panel panel-primary">
+                                            <div id="index_0" class="panel panel-success">
                                                 <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
                                                 <div class="panel-body" onclick="getID(@item.RequerimientoID);">
                                                     @item.Descripcion
@@ -106,7 +109,7 @@
                                 <div class="portlet" id="@item.RequerimientoID">
                                     <div class="portlet-content">
                                         <div class="postit-container">
-                                            <div id="index_0" class="panel panel-primary">
+                                            <div id="index_0" class="panel panel-danger">
                                                 <div class="panel-heading">#@item.RequerimientoID - @item.Titulo</div>
                                                 <div class="panel-body" onclick="getID(@item.RequerimientoID);">
                                                     @item.Descripcion

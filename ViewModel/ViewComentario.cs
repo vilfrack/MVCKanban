@@ -6,7 +6,7 @@ namespace MVCKanban.ViewModel
 {
     public class ViewComentario
     {
-        public string TaskID { get; set; }
+        public string RequerimientoID { get; set; }
 
         [Required(ErrorMessage = "{0} No puede quedar vacio ")]
         [StringLength(500, ErrorMessage = "El campo {0} Debe contener entre {2} y {1} caracter", MinimumLength = 5)]

@@ -81,7 +81,7 @@ namespace MVCKanban.Controllers
             TaskFiles.NombreCompletoAsignado = usuarioAsignado.Apellido + " " + usuarioAsignado.Nombre;
 
             TaskFiles.ComentarioPerfiles = new List<ViewComentarioPerfiles>();
-            foreach (var item in db.Comentarios.Where(w => w.TaskID == TaskFiles.RequerimientoID).ToList())
+            foreach (var item in db.Comentarios.Where(w => w.RequerimientoID == TaskFiles.RequerimientoID).ToList())
             {
                 TaskFiles.ComentarioPerfiles.Add(new ViewComentarioPerfiles
                 {
@@ -101,29 +101,29 @@ namespace MVCKanban.Controllers
         public JsonResult Save(ViewComentario viewComentario, int status)
         {
             bool bsuccess = false;
-            if (ModelState.IsValid && status == 5)
+            if (viewComentario.Comentario !="")
             {
                 Comentarios coment = new Comentarios();
-
-                MaestroTaskStatus maestroTaskStatus = new MaestroTaskStatus();
-
                 coment.Comentario = viewComentario.Comentario;
-                coment.TaskID = Convert.ToInt32(viewComentario.TaskID);
+                coment.RequerimientoID = Convert.ToInt32(viewComentario.RequerimientoID);
                 coment.UsuarioID = usuario.GetIdUser();
                 coment.Fecha = DateTime.Now;
-
-                maestroTaskStatus.Fecha = DateTime.Now.Date;
-                maestroTaskStatus.RequerimientoID = Convert.ToInt32(viewComentario.TaskID);
-                maestroTaskStatus.StatusID = status == 0 ? 3 : 5;
-
                 db.Comentarios.Add(coment);
-                db.MaestroTaskStatus.Add(maestroTaskStatus);
+                db.SaveChanges();
+                bsuccess = true;
+            }
 
-                var requerimiento = db.Requerimiento.Find(Convert.ToInt32(viewComentario.TaskID));
+            if (ModelState.IsValid && status == 5)
+            {
+                MaestroTaskStatus maestroTaskStatus = new MaestroTaskStatus();
+                maestroTaskStatus.Fecha = DateTime.Now.Date;
+                maestroTaskStatus.RequerimientoID = Convert.ToInt32(viewComentario.RequerimientoID);
+                maestroTaskStatus.StatusID = status == 0 ? 3 : 5;
+                db.MaestroTaskStatus.Add(maestroTaskStatus);
+                var requerimiento = db.Requerimiento.Find(Convert.ToInt32(viewComentario.RequerimientoID));
                 requerimiento.StatusIDActual = status == 0 ? 3 : 5;
                 requerimiento.FechaFinalizacion = DateTime.Now.Date;
                 db.SaveChanges();
-
                 bsuccess = true;
             }
 
@@ -135,7 +135,7 @@ namespace MVCKanban.Controllers
             char[] MyChar = { '~' };
             var comentarioPerfil = (from perfil in db.Perfiles
                                     join coment in db.Comentarios on perfil.UsuarioID equals coment.UsuarioID
-                                    where coment.TaskID == id
+                                    where coment.RequerimientoID == id
                                     select new
                                     {
                                         IDComentario = coment.IDComentario,

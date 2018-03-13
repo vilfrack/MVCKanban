@@ -8,6 +8,6 @@
         public string UsuarioAsignado { get; set; }
         public string rutaImg { get; set; }
         public string Asignado { get; set; }
-        public int TaskID { get; set; }
+        public int? RequerimientoID { get; set; }
     }
 }

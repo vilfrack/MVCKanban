@@ -6,6 +6,9 @@ namespace MVCKanban.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
@@ -36,11 +39,52 @@ namespace MVCKanban.Migrations
                 new Models.Permisos { PermisoID = 4, Descripcion = "Eliminar" },
                 new Models.Permisos { PermisoID = 5, Descripcion = "Asignar" }
             );
-            //SE AGREGAN LOS MODULOS
+            #region ESTO NO DEBE ESTAR, SE AGREGO EN CASO DE EMERGENCIA
+            ////SE AGREGAN LOS MODULOS
             //context.Modulo.AddOrUpdate(
-            //    new Models.Modulo { ModuloID = 1, Descripcion = "Permiso" },
-            //    new Models.Modulo { ModuloID = 2, Descripcion = "Requerimiento" }
+            //    new Models.Modulo { Descripcion = "Permiso" },
+            //    new Models.Modulo { Descripcion = "Requerimiento" },
+            //    new Models.Modulo { Descripcion = "DashBoard" },
+            //    new Models.Modulo { Descripcion = "Asignar" },
+            //    new Models.Modulo { Descripcion = "Sistema" },
+            //    new Models.Modulo { Descripcion = "Kanban" },
+            //    new Models.Modulo { Descripcion = "Revision" }
             //);
+            //// SE AGREGAN LOS PERMISOS A ADMIN
+            //context.PermisoPorRol.AddOrUpdate(
+            //    new Models.PermisoPorRol { PermisoID = 1, }
+
+            //);
+            #endregion
+            //var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            // Create Admin Role
+            var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            string roleName = "Administrador";
+            IdentityResult roleResult;
+
+            // Check to see if Role Exists, if not create it
+            if (!RoleManager.RoleExists(roleName))
+            {
+                roleResult = RoleManager.Create(new IdentityRole(roleName));
+            }
+            //SE CREA AL USUARIO
+            if (!(context.Users.Any(u => u.UserName == "admin")))
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                var userToInsert = new ApplicationUser
+                {
+                    UserName = "admin",
+                    Email = "admin@admin.com"
+                };
+                userManager.Create(userToInsert, "123456");
+                //asociamos el rol al usuario
+                userManager.AddToRole(userToInsert.Id, "Administrador");
+
+                context.Perfiles.AddOrUpdate(
+                new Models.Perfiles { UsuarioID = userToInsert.Id, Nombre = "Administrador", rutaImg= "~/Images/empleados/perfil.jpg" }
+                );
+            }
         }
     }
 }

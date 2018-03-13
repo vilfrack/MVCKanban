@@ -46,59 +46,130 @@ namespace MVCKanban.Controllers
             DateTime FinDiciembre = fechasDashBoard.FinDiciembre();
 
             List<AplicoMensual> viewDashBoard = new List<AplicoMensual>();
+            string UsuarioID = userIdentity.GetIdUser();
+            int DepartamentoID = userIdentity.GetDepartByIDUser(UsuarioID);
             foreach (var item in db.Status.ToList())
             {
                 viewDashBoard.Add(new AplicoMensual
                 {
                     statusNombre = item.nombre,
-                    enero = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioEnero && w.Fecha <= FinEnero && w.StatusID == item.StatusID).Count(),
-                    febrero = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioFebrero && w.Fecha <= FinFebrero && w.StatusID == item.StatusID).Count(),
-                    marzo = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioMarzo && w.Fecha <= FinMarzo && w.StatusID == item.StatusID).Count(),
-                    abril = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioAbril && w.Fecha <= FinAbril && w.StatusID == item.StatusID).Count(),
-                    mayo = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioMayo && w.Fecha <= FinMayo && w.StatusID == item.StatusID).Count(),
-                    junio = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioJunio && w.Fecha <= FinJunio && w.StatusID == item.StatusID).Count(),
-                    julio = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioJulio && w.Fecha <= FinJulio && w.StatusID == item.StatusID).Count(),
-                    agosto = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioAgosto && w.Fecha <= FinAgosto && w.StatusID == item.StatusID).Count(),
-                    septiembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioSeptiembre && w.Fecha <= FinSeptiembre && w.StatusID == item.StatusID).Count(),
-                    octubre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioOctubre && w.Fecha <= FinOctubre && w.StatusID == item.StatusID).Count(),
-                    noviembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioNoviembre && w.Fecha <= FinNoviembre && w.StatusID == item.StatusID).Count(),
-                    diciembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioDiciembre && w.Fecha <= FinDiciembre && w.StatusID == item.StatusID).Count(),
-                    TotalAsignado = db.MaestroTaskStatus.Where(w => w.StatusID == 1 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
-                    TotalDesarrollo = db.MaestroTaskStatus.Where(w => w.StatusID == 2 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
-                    TotalRealizado = db.MaestroTaskStatus.Where(w => w.StatusID == 3 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
-                    TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
+                    //enero = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioEnero && w.Fecha <= FinEnero && w.StatusID == item.StatusID ).Count(),
+                    enero = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioEnero && w.maestroTask.Fecha <= FinEnero && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
 
+                    febrero = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioFebrero && w.maestroTask.Fecha <= FinFebrero && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
 
-                    //aplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion).Count(),
-                    //noAplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion).Count(),
-                    aplicoEnero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoFebrero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoMarzo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoAbril = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoMayo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoJunio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoJulio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoAgosto = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoSeptiembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoOctubre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoNoviembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoDiciembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    marzo = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioMarzo && w.maestroTask.Fecha <= FinMarzo && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
 
-                    noAplicoEnero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoFebrero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoMarzo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoAbril = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoMayo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoJunio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoJulio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoAgosto = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoSeptiembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoOctubre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoNoviembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoDiciembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    abril = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioAbril && w.maestroTask.Fecha <= FinAbril && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
 
-                    aplico = db.Requerimiento.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion).Count(),
-                    noAplico = db.Requerimiento.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion).Count()
+                    mayo = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioMayo && w.maestroTask.Fecha <= FinMayo && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    junio = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioJunio && w.maestroTask.Fecha <= FinJunio && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    julio = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioJulio && w.maestroTask.Fecha <= FinJulio && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    agosto = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioAgosto && w.maestroTask.Fecha <= FinAgosto && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    septiembre = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioSeptiembre && w.maestroTask.Fecha <= FinSeptiembre && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    octubre = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioOctubre && w.maestroTask.Fecha <= FinOctubre && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    noviembre = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioNoviembre && w.maestroTask.Fecha <= FinNoviembre && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    diciembre = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioDiciembre && w.maestroTask.Fecha <= FinDiciembre && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    //febrero = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioFebrero && w.Fecha <= FinFebrero && w.StatusID == item.StatusID).Count(),
+                    //marzo = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioMarzo && w.Fecha <= FinMarzo && w.StatusID == item.StatusID).Count(),
+                    //abril = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioAbril && w.Fecha <= FinAbril && w.StatusID == item.StatusID).Count(),
+                    //mayo = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioMayo && w.Fecha <= FinMayo && w.StatusID == item.StatusID).Count(),
+                    //junio = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioJunio && w.Fecha <= FinJunio && w.StatusID == item.StatusID).Count(),
+                    //julio = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioJulio && w.Fecha <= FinJulio && w.StatusID == item.StatusID).Count(),
+                    //agosto = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioAgosto && w.Fecha <= FinAgosto && w.StatusID == item.StatusID).Count(),
+                    //septiembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioSeptiembre && w.Fecha <= FinSeptiembre && w.StatusID == item.StatusID).Count(),
+                    //octubre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioOctubre && w.Fecha <= FinOctubre && w.StatusID == item.StatusID).Count(),
+                    //noviembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioNoviembre && w.Fecha <= FinNoviembre && w.StatusID == item.StatusID).Count(),
+                    //diciembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioDiciembre && w.Fecha <= FinDiciembre && w.StatusID == item.StatusID).Count(),
+                    //TotalAsignado = db.MaestroTaskStatus.Where(w => w.StatusID == 1 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
+                    //TotalDesarrollo = db.MaestroTaskStatus.Where(w => w.StatusID == 2 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
+                    //TotalRealizado = db.MaestroTaskStatus.Where(w => w.StatusID == 3 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
+                    //TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
+
+                    aplicoEnero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento==DepartamentoID).Count(),
+                    aplicoFebrero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoMarzo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoAbril = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoMayo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoJunio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoJulio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoAgosto = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoSeptiembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoOctubre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoNoviembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoDiciembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+
+                    noAplicoEnero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoFebrero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoMarzo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoAbril = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoMayo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoJunio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoJulio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoAgosto = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoSeptiembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoOctubre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoNoviembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoDiciembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+
+                    aplico = db.Requerimiento.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplico = db.Requerimiento.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion && w.IDDepartamento == DepartamentoID).Count()
                 });
             }
 
@@ -136,54 +207,136 @@ namespace MVCKanban.Controllers
             DateTime FInicio = Convert.ToDateTime(FechaInicio).Date;
             DateTime FFin = Convert.ToDateTime(fechaFinal).Date;
             List<AplicoMensual> viewDashBoard = new List<AplicoMensual>();
+            string UsuarioID = userIdentity.GetIdUser();
+            int DepartamentoID = userIdentity.GetDepartByIDUser(UsuarioID);
+
             foreach (var item in db.Status.ToList())
             {
                 viewDashBoard.Add(new AplicoMensual
                 {
                     statusNombre = item.nombre,
-                    enero = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioEnero && w.Fecha <= FinEnero && w.StatusID == item.StatusID).Count(),
-                    febrero = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioFebrero && w.Fecha <= FinFebrero && w.StatusID == item.StatusID).Count(),
-                    marzo = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioMarzo && w.Fecha <= FinMarzo && w.StatusID == item.StatusID).Count(),
-                    abril = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioAbril && w.Fecha <= FinAbril && w.StatusID == item.StatusID).Count(),
-                    mayo = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioMayo && w.Fecha <= FinMayo && w.StatusID == item.StatusID).Count(),
-                    junio = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioJunio && w.Fecha <= FinJunio && w.StatusID == item.StatusID).Count(),
-                    julio = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioJulio && w.Fecha <= FinJulio && w.StatusID == item.StatusID).Count(),
-                    agosto = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioAgosto && w.Fecha <= FinAgosto && w.StatusID == item.StatusID).Count(),
-                    septiembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioSeptiembre && w.Fecha <= FinSeptiembre && w.StatusID == item.StatusID).Count(),
-                    octubre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioOctubre && w.Fecha <= FinOctubre && w.StatusID == item.StatusID).Count(),
-                    noviembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioNoviembre && w.Fecha <= FinNoviembre && w.StatusID == item.StatusID).Count(),
-                    diciembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioDiciembre && w.Fecha <= FinDiciembre && w.StatusID == item.StatusID).Count(),
 
-                    TotalAsignado = db.MaestroTaskStatus.Where(w => w.StatusID == 1 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
-                    TotalDesarrollo = db.MaestroTaskStatus.Where(w => w.StatusID == 2 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
-                    TotalRealizado = db.MaestroTaskStatus.Where(w => w.StatusID == 3 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
-                    TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
+                    enero = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioEnero && w.maestroTask.Fecha <= FinEnero && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
 
-                    aplicoEnero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoFebrero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoMarzo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoAbril = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoMayo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoJunio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoJulio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoAgosto = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoSeptiembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoOctubre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoNoviembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    aplicoDiciembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    febrero = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioFebrero && w.maestroTask.Fecha <= FinFebrero && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
 
-                    noAplicoEnero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoFebrero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoMarzo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoAbril = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoMayo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoJunio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoJulio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoAgosto = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoSeptiembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoOctubre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoNoviembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                    noAplicoDiciembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    marzo = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioMarzo && w.maestroTask.Fecha <= FinMarzo && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    abril = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioAbril && w.maestroTask.Fecha <= FinAbril && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    mayo = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioMayo && w.maestroTask.Fecha <= FinMayo && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    junio = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioJunio && w.maestroTask.Fecha <= FinJunio && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    julio = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioJulio && w.maestroTask.Fecha <= FinJulio && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    agosto = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioAgosto && w.maestroTask.Fecha <= FinAgosto && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    septiembre = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioSeptiembre && w.maestroTask.Fecha <= FinSeptiembre && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    octubre = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioOctubre && w.maestroTask.Fecha <= FinOctubre && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    noviembre = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioNoviembre && w.maestroTask.Fecha <= FinNoviembre && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    diciembre = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioDiciembre && w.maestroTask.Fecha <= FinDiciembre && w.maestroTask.StatusID == item.StatusID && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    TotalAsignado = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.StatusID == 1 && w.maestroTask.Fecha >= FInicio && w.maestroTask.Fecha <= FFin && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    TotalDesarrollo = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.StatusID == 2 && w.maestroTask.Fecha >= FInicio && w.maestroTask.Fecha <= FFin && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    TotalRealizado = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.StatusID == 3 && w.maestroTask.Fecha >= FInicio && w.maestroTask.Fecha <= FFin && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    TotalRechazado = db.MaestroTaskStatus.Join(db.Requerimiento,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA PRIMERA TABLA
+                                                  taskID => taskID.RequerimientoID,//SE SELECCIONA LAS LLAVES DE LA SEGUNDA TABLA
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.StatusID == 4 && w.maestroTask.Fecha >= FInicio && w.maestroTask.Fecha <= FFin && w.task.IDDepartamento == DepartamentoID).Count(),
+
+                    aplicoEnero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoFebrero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoMarzo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoAbril = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoMayo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoJunio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoJulio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoAgosto = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoSeptiembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoOctubre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoNoviembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    aplicoDiciembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+
+                    noAplicoEnero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoFebrero = db.Requerimiento.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoMarzo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoAbril = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoMayo = db.Requerimiento.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoJunio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoJulio = db.Requerimiento.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoAgosto = db.Requerimiento.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoSeptiembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoOctubre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoNoviembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
+                    noAplicoDiciembre = db.Requerimiento.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5 && w.IDDepartamento == DepartamentoID).Count(),
 
                     aplico = db.Requerimiento.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion && w.FechaEntrega >= FInicio && w.FechaEntrega <= FFin).Count(),
                     noAplico = db.Requerimiento.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion && w.FechaEntrega >= FInicio && w.FechaEntrega <= FFin).Count()

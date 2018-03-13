@@ -68,7 +68,7 @@ namespace MVCKanban.Controllers
                     }
 
                     coment.Comentario = perfilUsuario.Apellido + " " + perfilUsuario.Nombre + " Ha modificado el status del requerimiento a " + status;
-                    coment.TaskID = cod;
+                    coment.RequerimientoID = cod;
                     coment.UsuarioID = usuario.GetIdUser();
                     coment.Fecha = DateTime.Now;
                     db.Comentarios.Add(coment);
@@ -110,6 +110,7 @@ namespace MVCKanban.Controllers
                                 Descripcion = tas.Descripcion,
                                 TaskID = tas.RequerimientoID,
                                 FechaFinalizacion = tas.FechaFinalizacion,
+                                FechaEntrega = tas.FechaEntrega,
                                 //
                                 UsuarioID = tas.UsuarioID,
                                 Asignado = tas.AsignadoID
@@ -142,10 +143,11 @@ namespace MVCKanban.Controllers
             TaskFiles.nombre = usuarioSolicitante.Apellido + " " + usuarioSolicitante.Nombre;
             TaskFiles.Foto = FotoPerfil;
             TaskFiles.FotoAsignado = FotoAsignado;
+            TaskFiles.FechaEntrega = Convert.ToString(subquery.FechaEntrega);
             TaskFiles.NombreCompletoAsignado = usuarioAsignado.Apellido + " " + usuarioAsignado.Nombre;
 
             TaskFiles.ComentarioPerfiles = new List<ViewComentarioPerfiles>();
-            foreach (var item in db.Comentarios.Where(w => w.TaskID == TaskFiles.RequerimientoID).ToList())
+            foreach (var item in db.Comentarios.Where(w => w.RequerimientoID == TaskFiles.RequerimientoID).ToList())
             {
                 TaskFiles.ComentarioPerfiles.Add(new ViewComentarioPerfiles
                 {
@@ -169,30 +171,33 @@ namespace MVCKanban.Controllers
             {
                 Comentarios coment = new Comentarios();
                 coment.Comentario = viewComentario.Comentario;
-                coment.TaskID = Convert.ToInt32(viewComentario.TaskID);
+                coment.RequerimientoID = Convert.ToInt32(viewComentario.RequerimientoID);
                 coment.UsuarioID = usuario.GetIdUser();
                 coment.Fecha = DateTime.Now.Date;
                 db.Comentarios.Add(coment);
                 db.SaveChanges();
 
-                var req = db.Requerimiento.Find(Convert.ToInt32(viewComentario.TaskID));
+                var req = db.Requerimiento.Find(Convert.ToInt32(viewComentario.RequerimientoID));
                 req.FechaEntrega = Convert.ToDateTime(viewComentario.FechaEntrega).Date;
                 db.SaveChanges();
 
                 bsuccess = true;
             }
-
-            if (File != null)
+            foreach (var itemFile in File)
             {
-                int TaskID = Convert.ToInt32(viewComentario.TaskID);
-                bool boolArchivos = utilitarios.CantidadArchivos(TaskID);
-                if (boolArchivos == true)
+                if (itemFile != null)
                 {
-                    return Json(new { success = false, cantidad = boolArchivos, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
+                    int TaskID = Convert.ToInt32(viewComentario.RequerimientoID);
+                    bool boolArchivos = utilitarios.CantidadArchivos(TaskID);
+                    if (boolArchivos == true)
+                    {
+                        return Json(new { success = false, cantidad = boolArchivos, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
+                    }
+                    SaveUploadedFile(File, Convert.ToInt32(viewComentario.RequerimientoID));
+                    bsuccess = true;
                 }
-                SaveUploadedFile(File, Convert.ToInt32(viewComentario.TaskID));
-                bsuccess = true;
             }
+
             return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
         }
         private void SaveUploadedFile(HttpPostedFileBase[] file, int id)
@@ -232,7 +237,7 @@ namespace MVCKanban.Controllers
             char[] MyChar = { '~' };
             var comentarioPerfil = (from perfil in db.Perfiles
                                     join coment in db.Comentarios on perfil.UsuarioID equals coment.UsuarioID
-                                    where coment.TaskID == id
+                                    where coment.RequerimientoID == id
                                     select new
                                     {
                                         IDComentario = coment.IDComentario,

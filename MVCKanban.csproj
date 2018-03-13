@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ModuloController.cs" />
+    <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\PermisosController.cs" />
     <Compile Include="Controllers\RequerimientoController.cs" />
     <Compile Include="Controllers\RevisionController.cs" />
@@ -219,6 +220,7 @@
     <Content Include="Scripts\adminlte.min.js" />
     <Content Include="Scripts\App\Asignar\Asignar.js" />
     <Content Include="Scripts\App\Departamento\Departamento.js" />
+    <Content Include="Scripts\App\Kanban\Kanban.js" />
     <Content Include="Scripts\App\Modulo\Modulo.js" />
     <Content Include="Scripts\App\Requerimiento\Requerimiento.js" />
     <Content Include="Scripts\App\Revision\Revision.js" />
@@ -255,6 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Notificaciones\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

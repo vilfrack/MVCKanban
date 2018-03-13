@@ -89,7 +89,10 @@
                     <li><a href="@Url.Action("index","Departamento")"><i class="fa fa-circle-o"></i> Departamento</a></li>
                     <li><a href="@Url.Action("index","Modulo")"><i class="fa fa-circle-o"></i> Modulos</a></li>
                     <li><a href="@Url.Action("index","Roles")"><i class="fa fa-circle-o"></i> Roles</a></li>
+                   @if (Permiso)
+                   {
                     <li><a href="@Url.Action("index","Permisos")"><i class="fa fa-circle-o"></i> Permisos</a></li>
+                   }
                     <li><a href="@Url.Action("index","Usuario")"><i class="fa fa-circle-o"></i> Usuarios</a></li>
                 </ul>
             </li>

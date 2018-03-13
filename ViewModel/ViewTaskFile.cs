@@ -21,6 +21,8 @@ namespace MVCKanban.ViewModel
 
         public string FechaFinalizacion { get; set; }
 
+        public string FechaEntrega{ get; set; }
+
         public string nombre { get; set; }
 
         public string status { get; set; }

@@ -51,7 +51,7 @@ namespace MVCKanban.Controllers
         [AccionPermiso(modulo = Permisos.AllModulos.Requerimiento, permisos = Permisos.AllPermisos.Asignar)]
         public ActionResult asignar(int id)
         {
-            var a = (from t in db.Requerimiento
+            var UsuarioAsignados = (from t in db.Requerimiento
                      join p in db.Perfiles on t.UsuarioID equals p.UsuarioID
                      where t.RequerimientoID == id
                      select new
@@ -78,16 +78,16 @@ namespace MVCKanban.Controllers
             List<ViewAsignar> viewAsignar = new List<ViewAsignar>();
             foreach (var item in perfiles)
             {
-                if (a.UsuarioAsignado == item.UsuarioID)
+                if (UsuarioAsignados.UsuarioAsignado == item.UsuarioID)
                 {
                     viewAsignar.Add(new ViewAsignar
                     {
                         Nombre = item.Nombre,
                         Apellido = item.Apellido,
                         rutaImg = item.rutaImg,
-                        UsuarioAsignado = a.UsuarioAsignado,
+                        UsuarioAsignado = UsuarioAsignados.UsuarioAsignado,
                         UsuarioID = item.UsuarioID,
-                        TaskID = a.TaskID
+                        RequerimientoID = UsuarioAsignados.TaskID
                     });
                 }
                 else
@@ -99,7 +99,7 @@ namespace MVCKanban.Controllers
                         rutaImg = item.rutaImg,
                         UsuarioAsignado = null,
                         UsuarioID = item.UsuarioID,
-                        TaskID = a.TaskID
+                        RequerimientoID = UsuarioAsignados.TaskID
                     });
                 }
 
@@ -116,7 +116,7 @@ namespace MVCKanban.Controllers
         {
             try
             {
-                var task = db.Requerimiento.Find(viewAsignar.TaskID);
+                var task = db.Requerimiento.Find(viewAsignar.RequerimientoID);
                 task.AsignadoID = viewAsignar.Asignado;
                 db.SaveChanges();
                 return Json(new { success = true, JsonRequestBehavior.AllowGet });

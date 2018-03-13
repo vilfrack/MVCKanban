@@ -11,7 +11,7 @@ namespace MVCKanban
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery.min.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
+            bundles.Add(new ScriptBundle("~/bundles/jqueryUIjs").Include(
                         "~/Scripts/jquery-ui.min.js"));
 
             bundles.Add(new StyleBundle("~/bundles/jqueryUI").Include(
@@ -59,6 +59,10 @@ namespace MVCKanban
             bundles.Add(new StyleBundle("~/Content/FileinputCSS").Include(
                       "~/Content/fileinput.min.css"));
 
+            //CHART JS
+            bundles.Add(new ScriptBundle("~/bundles/Chart").Include(
+           "~/Scripts/Chart.min.js").IncludeDirectory("~/Scripts", ".js"));
+
             /*SE AGREGAN LOS JS DE LOS MODULOS*/
             bundles.Add(new ScriptBundle("~/bundles/scriptRequerimiento").Include(
                "~/Scripts/App/Requerimiento/Requerimiento.js").IncludeDirectory("~/Scripts", ".js"));
@@ -80,13 +84,18 @@ namespace MVCKanban
              "~/Scripts/bootstrap-datepicker.js").IncludeDirectory("~/Scripts", ".js"));
 
             bundles.Add(new ScriptBundle("~/bundles/Asignar").Include(
-             "~/Scripts/Asignar/Asignar.js").IncludeDirectory("~/Scripts", ".js"));
+             "~/Scripts/App/Asignar/Asignar.js").IncludeDirectory("~/Scripts", ".js"));
 
             bundles.Add(new ScriptBundle("~/bundles/Revision").Include(
-            "~/Scripts/Revision/Revision.js").IncludeDirectory("~/Scripts", ".js"));
+            "~/Scripts/App/Revision/Revision.js").IncludeDirectory("~/Scripts", ".js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/Chart").Include(
-            "~/Scripts/Chart.min.js").IncludeDirectory("~/Scripts", ".js"));
+            bundles.Add(new ScriptBundle("~/bundles/Kanban").Include(
+            "~/Scripts/App/Kanban/Kanban.js").IncludeDirectory("~/Scripts", ".js"));
+
+
+
+
+
         }
     }
 }

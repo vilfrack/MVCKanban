@@ -16,14 +16,17 @@
 
 @Styles.Render("~/bundles/KanbanCss")
 @Styles.Render("~/bundles/DataPikerCss")
+@Styles.Render("~/Content/FileinputCSS")
 
+@Scripts.Render("~/bundles/datepicker")
+@Scripts.Render("~/bundles/FileinputJS")
 <form class="form-horizontal" enctype="multipart/form-data" id="formKanban">
     <div id="contenedor">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="myModalLabel">Caso #@Html.DisplayFor(m => m.RequerimientoID)  @Html.DisplayFor(m => m.Titulo)</h4>
             <label>Estado: @Html.DisplayFor(m => m.status)</label><br />
-            @*<label>Numero del caso: @Html.DisplayFor(m => m.TaskID)</label>*@
+            @*<label>Numero del caso: @Html.DisplayFor(m => m.RequerimientoID)</label>*@
         </div>
         <div class="modal-body">
             <div class="container">
@@ -34,7 +37,7 @@
                             <img src="@Url.Content(Model.Foto)" class="img-circle FotoPerfil" data-toggle="tooltip" data-placement="bottom" title="@Model.nombre" />
                         </div>
                         <div class="col-sm-4">
-                            @if (Model.FechaFinalizacion == null || Model.FechaFinalizacion == "")
+                            @if (Model.FechaEntrega == null || Model.FechaEntrega == "")
                             {
                                 <label>Fecha de entrega</label>
                                 <div class="input-group date DivDatapiker" id="div_FechaEntrega">
@@ -49,7 +52,7 @@
                             {
                                 <label>Fecha de entrega</label>
                                 <div class="input-group date">
-                                    <input type="text" name="fechaEntrega" class="form-control" value="@Model.FechaFinalizacion" readonly="readonly">
+                                    <input type="text" name="fechaEntrega" class="form-control" value="@Model.FechaEntrega" readonly="readonly">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
@@ -78,19 +81,20 @@
                             <input id="File" name="File" type="file" multiple>
                         </div>
                     </div>
-                    <div class="Comentario" id="div_Comentario">
-                        <label>Agregar Comentario</label>
-                        <textarea id="Comentario" class="form-control" name="Comentario" rows="3" placeholder="Comentario"></textarea>
-                        <label id="Error_Comentario" class="control-label"></label>
+                    <div class="form-group">
+                        <div class="Comentario" id="div_Comentario">
+                            <label>Agregar Comentario</label>
+                            <textarea id="Comentario" class="form-control" name="Comentario" rows="3" placeholder="Comentario"></textarea>
+                            <label id="Error_Comentario" class="control-label"></label>
+                        </div>
                     </div>
+                        <div id="alert_success" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
+                        <div id="alert_danger" class="alert alert-danger" role="alert"></div>
 
-                    <div id="alert_success" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
-                    <div id="alert_danger" class="alert alert-danger" role="alert"></div>
+                        <div id="DivComentarios">
 
-                    <div id="DivComentarios">
-
+                        </div>
                     </div>
-                </div>
                 @Html.HiddenFor(model => model.RequerimientoID)
             </div>
 
@@ -103,7 +107,7 @@
 </form>
 
 
-@Scripts.Render("~/bundles/DataPikerJs")
+
 
 <script>
     $(function () {
@@ -113,7 +117,8 @@
     $('.DivDatapiker input').datepicker({
         todayBtn: "linked",
         autoclose: true,
-        todayHighlight: true
+        todayHighlight: true,
+        format: 'yyyy-mm-dd',
     });
     $('#File').fileinput({
         language: 'es',
@@ -164,17 +169,17 @@
                 }
                 else {
                     ////VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
-                    //$.each(data.Errors, function (key, value) {
-                    //    //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
-                    //    //CREAR EN LO POSIBLE UNA CLASE QUE GUARDE ESTE CODIGO
-                    //    if (value != "true") {
-                    //        $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
-                    //        $("#div_" + key).addClass(" has-error has-feedback");
-                    //    } else {
-                    //        $("#Error_" + key).html('');
-                    //        $("#div_" + key).removeClass(" has-error has-feedback");
-                    //    }
-                    //});
+                    $.each(data.Errors, function (key, value) {
+                        //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
+                        //CREAR EN LO POSIBLE UNA CLASE QUE GUARDE ESTE CODIGO
+                        if (value != "true") {
+                            //$("#Error_" + key).html(value[value.length - 1].ErrorMessage);
+                            $("#div_" + key).addClass(" has-error has-feedback");
+                        } else {
+                            $("#Error_" + key).html('');
+                            $("#div_" + key).removeClass(" has-error has-feedback");
+                        }
+                    });
                     if (data.cantidad==true) {
                         $('#alert_danger').html('No se puede agregar mas de 3 archivos');
                         $('#alert_danger').show("fast");
@@ -193,7 +198,7 @@
     function LoadComment(){
         //CREO EL AJAX
         var params = {
-            id: $('#TaskID').val()
+            id: $('#RequerimientoID').val()
         };
         $("#DivComentarios").empty();
         $.ajax({

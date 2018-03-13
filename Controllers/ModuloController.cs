@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MVCKanban.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ModuloController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -1,7 +1,7 @@
 ﻿//CUANDO CERREMOS EL MODAL
 $("button[data-dismiss='modal']").click(function () {
-    $('#alert_success').hide();
-    $('#alert_danger').hide();
+    $('#alert_danger_asignar').hide();
+    $('#alert_success_asignar').hide();
     $("#btnEnviarEditar").prop('disabled', false);
     esconderMensajes();
 });
@@ -19,8 +19,8 @@ $("#formAsignar").submit(function (e) {
         dataType: "json",
         success: function (data) {
             if (data.success) {
-                $('#alert_success').show("fast");
-                $('#alert_danger').hide();
+                $('#alert_success_asignar').show("fast");
+                $('#alert_danger_asignar').hide();
                 LoadGrid();
             }
             else {
@@ -88,6 +88,6 @@ function LoadGrid() {
     })
 }
 function esconderMensajes() {
-    $('#alert_danger').hide();
-    $('#alert_success').hide();
+    $('#alert_danger_asignar').hide();
+    $('#alert_success_asignar').hide();
 }

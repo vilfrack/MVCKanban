@@ -52,6 +52,7 @@ namespace MVCKanban.Controllers
 
                     db.Requerimiento.Add(requerimiento);
                     db.SaveChanges();
+                    //se obtiene el ultimo requerimiento
                     var getLast = db.Requerimiento.OrderByDescending(u => u.RequerimientoID).FirstOrDefault();
                     id = getLast.RequerimientoID;
 
@@ -62,6 +63,8 @@ namespace MVCKanban.Controllers
                     db.MaestroTaskStatus.Add(maestroTaskStatus);
                     db.SaveChanges();
 
+
+                    Notificacion(id, requerimiento.UsuarioID);
 
                     bsuccess = true;
                     bool boolArchivos = utl.CantidadArchivos(id);
@@ -189,9 +192,14 @@ namespace MVCKanban.Controllers
                 }
                 MaestroTaskStatus maestro = db.MaestroTaskStatus.Where(d => d.RequerimientoID == id).SingleOrDefault();
                 Requerimiento requermiento = db.Requerimiento.Where(r => r.RequerimientoID == id).Single();
-
+                Notifiacion notificacion = db.Notifiacion.Where(r=>r.RequerimientoID==id).SingleOrDefault();
                 db.MaestroTaskStatus.Remove(maestro);
                 db.Requerimiento.Remove(requermiento);
+                if (notificacion != null)
+                {
+                    db.Notifiacion.Remove(notificacion);
+                }
+
                 db.SaveChanges();
                 return Json(new { success = bsuccess });
             }
@@ -250,6 +258,17 @@ namespace MVCKanban.Controllers
                         }).ToList()
             };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        private void Notificacion(int RequerimientoID, string UsuarioID) {
+            Notifiacion notificacion = new Notifiacion();
+            string nombre = user.FullNameUser(UsuarioID);
+            notificacion.Comentario = "El usuario "+ nombre + " ha creado un requerimiento";
+            notificacion.IDUsuario = UsuarioID;
+            notificacion.RequerimientoID = RequerimientoID;
+            notificacion.Visto = false;
+            db.Notifiacion.Add(notificacion);
+            db.SaveChanges();
         }
     }
 }

@@ -63,8 +63,8 @@ namespace MVCKanban.Controllers
                     db.MaestroTaskStatus.Add(maestroTaskStatus);
                     db.SaveChanges();
 
-
-                    Notificacion(id, requerimiento.UsuarioID);
+                    //se agregan los parametros de las notificaciones
+                    Notificacion(id, requerimiento.UsuarioID, requerimiento.IDDepartamento);
 
                     bsuccess = true;
                     bool boolArchivos = utl.CantidadArchivos(id);
@@ -192,12 +192,12 @@ namespace MVCKanban.Controllers
                 }
                 MaestroTaskStatus maestro = db.MaestroTaskStatus.Where(d => d.RequerimientoID == id).SingleOrDefault();
                 Requerimiento requermiento = db.Requerimiento.Where(r => r.RequerimientoID == id).Single();
-                Notifiacion notificacion = db.Notifiacion.Where(r=>r.RequerimientoID==id).SingleOrDefault();
+                Notificacion notificacion = db.Notificacion.Where(r=>r.RequerimientoID==id).SingleOrDefault();
                 db.MaestroTaskStatus.Remove(maestro);
                 db.Requerimiento.Remove(requermiento);
                 if (notificacion != null)
                 {
-                    db.Notifiacion.Remove(notificacion);
+                    db.Notificacion.Remove(notificacion);
                 }
 
                 db.SaveChanges();
@@ -259,15 +259,23 @@ namespace MVCKanban.Controllers
             };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
-
-        private void Notificacion(int RequerimientoID, string UsuarioID) {
-            Notifiacion notificacion = new Notifiacion();
+        //se crean las notifiaciones
+        private void Notificacion(int RequerimientoID, string UsuarioID,int? IDDepartamento) {
+            Notificacion notificacion = new Notificacion();
+            //se obtiene el nombre de la persona que crea el requerimiento
             string nombre = user.FullNameUser(UsuarioID);
+            //se obtiene la ruta de la foto de la persona que crea el requerimiento
+            var Foto = db.Perfiles.Where(w => w.UsuarioID == UsuarioID).Select(s => s.rutaImg).SingleOrDefault();
+
             notificacion.Comentario = "El usuario "+ nombre + " ha creado un requerimiento";
-            notificacion.IDUsuario = UsuarioID;
+            notificacion.FullName = nombre;
+            notificacion.Foto = Foto;
+            notificacion.IDDepartamento = IDDepartamento;
             notificacion.RequerimientoID = RequerimientoID;
             notificacion.Visto = false;
-            db.Notifiacion.Add(notificacion);
+            notificacion.ComentarioCreado = false;
+            notificacion.RequerimientoCreado = true;
+            db.Notificacion.Add(notificacion);
             db.SaveChanges();
         }
     }

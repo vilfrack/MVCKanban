@@ -193,6 +193,7 @@
     <Compile Include="Utilitarios\Utilitarios.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
     <Compile Include="ViewModel\ViewAsignar.cs" />
+    <Compile Include="ViewModel\ViewAsignarNotificacion.cs" />
     <Compile Include="ViewModel\ViewComentario.cs" />
     <Compile Include="ViewModel\ViewDashboard.cs" />
     <Compile Include="ViewModel\ViewGetPermisos.cs" />
@@ -257,7 +258,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Notificaciones\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -299,6 +299,7 @@
     <Content Include="Views\Menu\Index.cshtml" />
     <Content Include="Views\DashBoard\Index.cshtml" />
     <Content Include="Views\DashBoard\DashBoardUsuario.cshtml" />
+    <Content Include="Views\Notificaciones\AsignarNotificaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">

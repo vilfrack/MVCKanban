@@ -10,6 +10,7 @@ using MVCKanban.ViewModel;
 
 namespace MVCKanban.Controllers
 {
+    [Authorize]
     public class NotificacionesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -55,6 +56,7 @@ namespace MVCKanban.Controllers
                 {
                     ViewAsignarNotificacion.Add(new ViewModel.ViewAsignarNotificacion
                     {
+                        RequerimientoID = item.RequerimientoID,
                         NombreUsuario = item.FullName,
                         Cantidad = noti.Count,
                         Comentario = item.Comentario,
@@ -62,16 +64,6 @@ namespace MVCKanban.Controllers
                     });
                 }
             }
-            //else
-            //{
-            //    ViewAsignarNotificacion.Add(new ViewModel.ViewAsignarNotificacion
-            //    {
-            //        NombreUsuario = "",
-            //        Cantidad = 0,
-            //        Comentario = "",
-            //        Foto = ""
-            //    });
-            //}
             ViewBag.Cantidad = cantidad;
             return PartialView(ViewAsignarNotificacion.ToList());
         }

@@ -9,7 +9,7 @@ namespace MVCKanban.ViewModel
     {
         //public string UsuarioID { get; set; }
         //public string Nombre { get; set; }
-        //public string Apellido { get; set; }
+        public int RequerimientoID { get; set; }
         public string Foto { get; set; }
         public string NombreUsuario { get; set; }
         public string Comentario { get; set; }

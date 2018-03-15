@@ -267,7 +267,7 @@ namespace MVCKanban.Controllers
             //se obtiene la ruta de la foto de la persona que crea el requerimiento
             var Foto = db.Perfiles.Where(w => w.UsuarioID == UsuarioID).Select(s => s.rutaImg).SingleOrDefault();
 
-            notificacion.Comentario = "El usuario "+ nombre + " ha creado un requerimiento";
+            notificacion.Comentario = "Ha creado un requerimiento";
             notificacion.FullName = nombre;
             notificacion.Foto = Foto;
             notificacion.IDDepartamento = IDDepartamento;

@@ -65,7 +65,7 @@ function LoadGrid() {
         bProcessing: true,
         sAjaxSource: '/Asignar/get',
         "columns": [
-          { "data": "TaskID" },
+          { "data": "RequerimientoID" },
           { "data": "Titulo" },
           { "data": "Descripcion" },
           { "data": "Solicitante" },

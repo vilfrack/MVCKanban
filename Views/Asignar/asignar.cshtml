@@ -5,10 +5,10 @@
         <div class="row">
             @foreach (var item in Model)
             {
-                @Html.Hidden("TaskID", item.TaskID)
+                @Html.Hidden("RequerimientoID", item.RequerimientoID)
                 <div class="col-sm-5 col-md-3">
                     <div class="thumbnail">
-                        <img src="@Url.Content(item.rutaImg)" height="30%">
+                        <img src="@Url.Content(item.rutaImg)" height="30">
                         <div class="caption">
                             <label> @item.Apellido &nbsp; @item.Nombre </label><br />
                             <div class="radio">

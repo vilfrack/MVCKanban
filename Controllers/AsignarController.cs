@@ -15,7 +15,7 @@ namespace MVCKanban.Controllers
         public Utilitarios.Utilitarios utilitarios = new Utilitarios.Utilitarios();
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [AccionPermiso(modulo = Permisos.AllModulos.Requerimiento, permisos = Permisos.AllPermisos.Asignar)]
+        [AccionPermiso(modulo = Permisos.AllModulos.Asignar, permisos = Permisos.AllPermisos.Asignar)]
         public ActionResult Index()
         {
             return View();
@@ -32,7 +32,7 @@ namespace MVCKanban.Controllers
                         where t.IDDepartamento == IDDepartamento
                         select new
                         {
-                            TaskID = t.RequerimientoID,
+                            RequerimientoID = t.RequerimientoID,
                             Descripcion = t.Descripcion,
                             Titulo = t.Titulo,
                             Solicitante = p.Apellido + " " + p.Nombre,
@@ -48,7 +48,7 @@ namespace MVCKanban.Controllers
         }
 
         // GET: Asignar/Create
-        [AccionPermiso(modulo = Permisos.AllModulos.Requerimiento, permisos = Permisos.AllPermisos.Asignar)]
+        [AccionPermiso(modulo = Permisos.AllModulos.Asignar, permisos = Permisos.AllPermisos.Asignar)]
         public ActionResult asignar(int id)
         {
             var UsuarioAsignados = (from t in db.Requerimiento
@@ -56,7 +56,7 @@ namespace MVCKanban.Controllers
                      where t.RequerimientoID == id
                      select new
                      {
-                         TaskID = t.RequerimientoID,
+                         RequerimientoID = t.RequerimientoID,
                          UsuarioAsignado = t.AsignadoID
                      }).SingleOrDefault();
 
@@ -87,7 +87,7 @@ namespace MVCKanban.Controllers
                         rutaImg = item.rutaImg,
                         UsuarioAsignado = UsuarioAsignados.UsuarioAsignado,
                         UsuarioID = item.UsuarioID,
-                        RequerimientoID = UsuarioAsignados.TaskID
+                        RequerimientoID = UsuarioAsignados.RequerimientoID
                     });
                 }
                 else
@@ -99,102 +99,26 @@ namespace MVCKanban.Controllers
                         rutaImg = item.rutaImg,
                         UsuarioAsignado = null,
                         UsuarioID = item.UsuarioID,
-                        RequerimientoID = UsuarioAsignados.TaskID
+                        RequerimientoID = UsuarioAsignados.RequerimientoID
                     });
                 }
 
             }
+            AgregarVisto(id);
             return PartialView(viewAsignar);
 
 
 
         }
 
-        // POST: Asignar/Create
-        [HttpPost]
-        public ActionResult asignar(ViewAsignar viewAsignar)
-        {
-            try
+        public void AgregarVisto(int RequerimientoID) {
+            var noti = db.Notificacion.Where(w => w.RequerimientoID == RequerimientoID && w.Visto == false).SingleOrDefault();
+            if (noti != null)
             {
-                var task = db.Requerimiento.Find(viewAsignar.RequerimientoID);
-                task.AsignadoID = viewAsignar.Asignado;
+                noti.Visto = true;
                 db.SaveChanges();
-                return Json(new { success = true, JsonRequestBehavior.AllowGet });
-                //return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Asignar/Edit/5
-        public ActionResult Edit(int id)
-        {
-
-            var a = (from t in db.Requerimiento
-                     join p in db.Perfiles on t.UsuarioID equals p.UsuarioID
-                     where t.RequerimientoID == id
-                     select new
-                     {
-                         TaskID = t.RequerimientoID,
-                         Descripcion = t.Descripcion,
-                         Solicitante = p.Apellido + " " + p.Nombre,
-                         Fecha = t.FechaCreacion,
-                         Asignado = t.AsignadoID
-                     }).SingleOrDefault();
-            if (a.Asignado == null)
-            {
-                return PartialView();
             }
 
-
-
-            var query = db.Roles.Find(id);
-            var viewRol = new ViewRol
-            {
-                Name = query.Name,
-                Id = query.Id
-            };
-            return PartialView(viewRol);
-        }
-
-        // POST: Asignar/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Asignar/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Asignar/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

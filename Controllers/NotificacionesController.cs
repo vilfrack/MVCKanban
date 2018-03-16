@@ -23,9 +23,31 @@ namespace MVCKanban.Controllers
             return View();
         }
         // GET: Notificaciones
-        public ActionResult CasosNotificaciones()
+        public ActionResult ComentarioNotificaciones()
         {
             return View();
+        }
+        public ActionResult ReqAsignadosNotificaciones()
+        {
+
+            List<ViewAsignarNotificacion> ViewAsignarNotificacion = new List<ViewAsignarNotificacion>();
+            //obtenemos el IDUser
+            string IDUser = user.GetIdUser();
+            //se valida si el usuario tiene requerimientos asigandos
+            var noti = db.Notificacion.Where(w => w.RequerimientoAsignado == true && w.UsuarioAsignadoID == IDUser).ToList();
+            foreach (var item in noti)
+            {
+                ViewAsignarNotificacion.Add(new ViewModel.ViewAsignarNotificacion
+                {
+                    RequerimientoID = item.RequerimientoID,
+                    NombreUsuario = item.FullName,
+                    Cantidad = noti.Count,
+                    Comentario = item.Comentario,
+                    Foto = item.Foto
+                });
+            }
+            ViewBag.Cantidad = noti.Count;
+            return PartialView(ViewAsignarNotificacion.ToList());
         }
         public ActionResult AsignarNotificaciones() {
             int cantidad = 0;

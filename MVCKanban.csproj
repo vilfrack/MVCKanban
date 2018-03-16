@@ -300,6 +300,7 @@
     <Content Include="Views\DashBoard\Index.cshtml" />
     <Content Include="Views\DashBoard\DashBoardUsuario.cshtml" />
     <Content Include="Views\Notificaciones\AsignarNotificaciones.cshtml" />
+    <Content Include="Views\Notificaciones\ReqAsignadosNotificaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">

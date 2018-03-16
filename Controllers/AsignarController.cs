@@ -111,7 +111,24 @@ namespace MVCKanban.Controllers
 
         }
 
-        public void AgregarVisto(int RequerimientoID) {
+        [HttpPost]
+        public ActionResult asignar(ViewAsignar viewAsignar)
+        {
+            try
+            {
+                var requerimiento = db.Requerimiento.Find(viewAsignar.RequerimientoID);
+                requerimiento.AsignadoID = viewAsignar.Asignado;
+                db.SaveChanges();
+                AsignadoNotificacion(requerimiento.AsignadoID,requerimiento.RequerimientoID);
+                return Json(new { success = true, JsonRequestBehavior.AllowGet });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        private void AgregarVisto(int RequerimientoID) {
             var noti = db.Notificacion.Where(w => w.RequerimientoID == RequerimientoID && w.Visto == false).SingleOrDefault();
             if (noti != null)
             {
@@ -120,5 +137,22 @@ namespace MVCKanban.Controllers
             }
 
         }
+        //SE AGREGA LA NOTIFICACION AL PERSONAL AL QUE SE LE ASIGNAN LOS CASOS
+        private void AsignadoNotificacion(string AsignadoID,int RequerimientoID) {
+            var noti = db.Notificacion.Where(w => w.RequerimientoID == RequerimientoID).SingleOrDefault();
+            string UsuarioID = userIdentity.GetIdUser();
+            string nombre = userIdentity.FullNameUser(UsuarioID);
+            string foto = db.Perfiles.Where(w => w.UsuarioID == UsuarioID).Select(s => s.rutaImg).SingleOrDefault();
+            if (noti != null)
+            {
+                noti.UsuarioAsignadoID = AsignadoID;
+                noti.RequerimientoAsignado = true;
+                noti.Comentario = "Te han asigando un requerimiento";
+                noti.FullName = nombre;
+                noti.Foto = foto;
+                db.SaveChanges();
+            }
+        }
+
     }
 }
